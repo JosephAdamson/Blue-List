@@ -2,10 +2,10 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/popup/popup.tsx":
-/*!*****************************!*\
-  !*** ./src/popup/popup.tsx ***!
-  \*****************************/
+/***/ "./src/options/options.tsx":
+/*!*********************************!*\
+  !*** ./src/options/options.tsx ***!
+  \*********************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -19,12 +19,8 @@ __webpack_require__(/*! ../styles/index.css */ "./src/styles/index.css");
 const container = document.createElement("div");
 document.body.appendChild(container);
 const root = client_1.default.createRoot(container);
-root.render(react_1.default.createElement("div", { className: "flex bg-white h-[300px] w-[500px]" },
-    react_1.default.createElement("div", { className: "p-4" },
-        react_1.default.createElement("h1", { className: "text-md font-bold text-black" }, "Would you like to set a timeout for this site?"),
-        react_1.default.createElement("div", null,
-            react_1.default.createElement("h2", null))),
-    react_1.default.createElement("div", { className: "w-1/2 bg-offWhite" })));
+root.render(react_1.default.createElement("div", { className: "bg-slate-300 h-screen" },
+    react_1.default.createElement("h1", { className: "text-black" }, "Options")));
 
 
 /***/ })
@@ -183,7 +179,7 @@ root.render(react_1.default.createElement("div", { className: "flex bg-white h-[
 /******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
 /******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
 /******/ 		var installedChunks = {
-/******/ 			"popup": 0
+/******/ 			"options": 0
 /******/ 		};
 /******/ 		
 /******/ 		// no chunk on demand loading
@@ -238,9 +234,9 @@ root.render(react_1.default.createElement("div", { className: "flex bg-white h-[
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_css-loader_dist_runtime_api_js-node_modules_css-loader_dist_runtime_getU-88f9d9","src_styles_index_css"], () => (__webpack_require__("./src/popup/popup.tsx")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_css-loader_dist_runtime_api_js-node_modules_css-loader_dist_runtime_getU-88f9d9","src_styles_index_css"], () => (__webpack_require__("./src/options/options.tsx")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=popup.js.map
+//# sourceMappingURL=options.js.map

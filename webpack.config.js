@@ -9,7 +9,10 @@ module.exports = {
     mode: "development",
     devtool: "cheap-module-source-map",
     entry: {
-        popup: path.resolve("./src/popup/popup.tsx")
+        popup: path.resolve("./src/popup/popup.tsx"),
+        options: path.resolve("./src/options/options.tsx"),
+        background: path.resolve("./src/background/background.ts")
+
     },
     module: {
         rules: [
@@ -39,7 +42,7 @@ module.exports = {
                     }
                 ]
             },
-            
+
         ]
     },
     plugins: [
@@ -49,16 +52,30 @@ module.exports = {
                 to: path.resolve('dist')
             }]
         }),
-        new HTMLWebpackPlugin({
-            title: "blue list chrome extension",
-            filename: "popup.html",
-            chunks: ["popup"]
-        })
+        ...getHTMLPlugins([
+            "popup",
+            "options"
+        ])
     ],
     resolve: {
         extensions: [".tsx", ".ts", ".js"]
     },
     output: {
         filename: "[name].js"
+    },
+    optimization: {
+        splitChunks: {
+            // include all types of chunks
+            chunks: 'all',
+        },
     }
+}
+
+
+function getHTMLPlugins(chunks) {
+    return chunks.map(chunk => new HTMLWebpackPlugin({
+        title: "Blue List chrome extension",
+        filename: `${chunk}.html`,
+        chunks: [chunk]
+    }));
 }

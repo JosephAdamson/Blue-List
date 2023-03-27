@@ -12,7 +12,14 @@
         "default_title": "blue list",
         "deafult_icon": "favicon-48x48.png"
     },
-    "permissions": ["tabs"],
+    "permissions": [
+        "tabs",
+        "storage"
+    ],
     "content_scripts": [
-    ]
+    ],
+    "options_page": "options.html",
+    "background": {
+        "service_worker": "background.js"
+    }
 }
