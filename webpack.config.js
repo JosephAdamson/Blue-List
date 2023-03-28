@@ -36,7 +36,7 @@ module.exports = {
                         options: {
                             postcssOptions: {
                                 ident: 'postcss',
-                                plugins: [tailwindcss, autoprefixer],
+                                   plugins: [tailwindcss, autoprefixer],
                             },
                         },
                     }

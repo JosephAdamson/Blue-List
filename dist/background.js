@@ -10,13 +10,20 @@
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "getTab": () => (/* binding */ getTab)
+/* harmony export */   "getTab": () => (/* binding */ getTab),
+/* harmony export */   "getURL": () => (/* binding */ getURL)
 /* harmony export */ });
 
 
 const getTab = async () => {
-    let res = await chrome.tabs.query({active: true, lastFocusedWindow: true});
-    console.log(`This is what a tab looks like: ${res}`);
+    let tab = await chrome.tabs.query({active: true, lastFocusedWindow: true});
+    return tab;
+}
+
+
+const getURL = async () => {
+    const currentTab = await getTab();
+    return currentTab[0].url;
 }
 
 

@@ -4,10 +4,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        offWhite: "#fafafa"
+        offWhite: "#fafafa",
+        blueHighlight: "#3b74aa"
       },
       fontFamily: {
-        opensans: ['OpenSans', 'sans-serif']
+        opensans: ['OpenSans', 'sans-serif'],
+        novaSquare: ['NovaSquare', 'cursive']
       }
     },
   },

@@ -7,8 +7,7 @@
     src: url("../public/fonts/OpenSans-VariableFont.ttf");
 }
 
-@layer base {
-    html {
-        font-family: "OpenSans";
-    }
+@font-face {
+    font-family: "NovaSquare";
+    src: url("../public/fonts/NovaSquare-Regular.ttf");
 }
