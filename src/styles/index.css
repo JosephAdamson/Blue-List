@@ -11,3 +11,35 @@
     font-family: "NovaSquare";
     src: url("../public/fonts/NovaSquare-Regular.ttf");
 }
+
+/*
+couldn't get to use tailwindcss/forms without adding nonsense
+here are some rules for input elements 
+*/
+:root {
+    --radio-color: #2b3467;
+}
+
+input[type="radio"] {
+    appearance: none;
+    display: grid;
+    place-items: center;
+    background-color: #fff;
+    margin: 0;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid var(--radio-color);
+} 
+
+input[type="radio"]::before {
+    content: "";
+    width: 0.5rem;
+    height: 0.5rem;
+    transform: scale(0);
+    transition: 120ms transform ease-out;
+    background-color: var(--radio-color);
+}
+
+input[type="radio"]:checked::before {
+    transform: scale(1);
+}

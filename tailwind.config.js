@@ -5,7 +5,8 @@ module.exports = {
     extend: {
       colors: {
         offWhite: "#fafafa",
-        blueHighlight: "#3b74aa"
+        blueHighlight: "#3b74aa",
+        listBlue: "#2b3467"
       },
       fontFamily: {
         opensans: ['OpenSans', 'sans-serif'],
