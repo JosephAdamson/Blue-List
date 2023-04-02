@@ -2,6 +2,178 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/options/OptionsPage.tsx":
+/*!*************************************!*\
+  !*** ./src/options/OptionsPage.tsx ***!
+  \*************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+const uuid_1 = __webpack_require__(/*! uuid */ "./node_modules/uuid/dist/commonjs-browser/index.js");
+function OptionsPage() {
+    const [fromHours, setFromHours] = (0, react_1.useState)("");
+    const [fromMinutes, setFromMinutes] = (0, react_1.useState)("");
+    const [toHours, setToHours] = (0, react_1.useState)("");
+    const [toMinutes, setToMinutes] = (0, react_1.useState)("");
+    const [blueListURLs, setBLueListURLS] = (0, react_1.useState)([]);
+    const [isInvalidEntry, setIsInvalidEntry] = (0, react_1.useState)(false);
+    const [selectedURLS, setSelectedURLS] = (0, react_1.useState)([]);
+    const inputHandler = (e, setState) => {
+        var _a;
+        e.preventDefault();
+        const userInput = e.currentTarget.value;
+        if ((((_a = userInput.match(/\d/g)) === null || _a === void 0 ? void 0 : _a.length) === userInput.length) || userInput === "") {
+            setState(userInput);
+        }
+    };
+    const invalidEntryHandler = () => {
+        setIsInvalidEntry(true);
+        setTimeout(() => {
+            setIsInvalidEntry(false);
+        }, 3000);
+    };
+    const setTimeFrame = () => __awaiter(this, void 0, void 0, function* () {
+        if (fromHours && fromMinutes && toHours && toMinutes) {
+            console.log(`From ${fromHours}:${fromMinutes} to ${toHours}:${toMinutes}`);
+            const data = yield fetchBlueListData();
+            chrome.storage.sync.set({
+                "blueList": {
+                    timeFrom: `${fromHours}:${fromMinutes}`,
+                    timeTo: `${toHours}:${toMinutes}`,
+                    urls: data.urls
+                }
+            });
+            setFromHours("");
+            setFromMinutes("");
+            setToHours("");
+            setToMinutes("");
+        }
+        else {
+            invalidEntryHandler();
+        }
+    });
+    const fetchBlueListData = () => __awaiter(this, void 0, void 0, function* () {
+        const blueListData = yield chrome.storage.sync.get("blueList");
+        return blueListData;
+    });
+    const deleteSelected = () => __awaiter(this, void 0, void 0, function* () {
+        const currentBlueList = yield fetchBlueListData();
+        const updatedURLs = blueListURLs.filter((url, i) => !selectedURLS[i]);
+        chrome.storage.sync.set({
+            "blueList": {
+                timeFrom: currentBlueList.timeFrom,
+                timeTo: currentBlueList.timeTo,
+                urls: [...updatedURLs]
+            }
+        });
+        setBLueListURLS(updatedURLs);
+        setSelectedURLS(Array.from({ length: updatedURLs.length }, (_, i) => false));
+    });
+    const deleteAll = () => __awaiter(this, void 0, void 0, function* () {
+        const currentBlueList = yield fetchBlueListData();
+        yield chrome.storage.sync.set({
+            "blueList": {
+                timeFrom: currentBlueList.timeFrom,
+                timeTo: currentBlueList.timeTo,
+                urls: []
+            }
+        });
+        const res = yield chrome.storage.sync.get("blueList");
+        console.log(res);
+        setBLueListURLS([]);
+        setSelectedURLS([]);
+    });
+    const urlClickedHandler = (e) => {
+        const index = e.currentTarget.getAttribute("data-id");
+        const newSelectedURLS = selectedURLS;
+        newSelectedURLS[index] = !selectedURLS[index];
+        setSelectedURLS(selectedURLS => [...newSelectedURLS]);
+    };
+    (0, react_1.useEffect)(() => {
+        const fetchData = () => __awaiter(this, void 0, void 0, function* () {
+            const data = yield fetchBlueListData();
+            setBLueListURLS(data["blueList"].urls);
+            setSelectedURLS(Array.from({ length: data["blueList"].urls.length }, (_, i) => false));
+        });
+        fetchData();
+    }, []);
+    return (react_1.default.createElement("div", { className: "flex flex-col items-center bg-offWhite h-screen w-full font-openSans" },
+        react_1.default.createElement("div", { className: "flex h-20 m-2 px-4 w-full md:w-2/3" },
+            react_1.default.createElement("img", { className: "h-full", src: "favicon-48x48.png", alt: "icon" })),
+        react_1.default.createElement("div", { className: "flex md:w-2/3 h-fit w-screen my-2 p-6 flex-col gap-4" },
+            react_1.default.createElement("h1", { className: "font-bold text-lg" }, "Select you time out period"),
+            react_1.default.createElement("div", { className: "flex w-full border-slate-300 border-2" },
+                react_1.default.createElement("label", { className: "flex gap-2 text-lg p-2" },
+                    "From",
+                    react_1.default.createElement("input", { className: `md:w-3/12 w-4/12 px-2 border-[1px] 
+                            ${isInvalidEntry ? "border-red-400" : "border-listBlue"}`, type: "text", maxLength: 2, placeholder: "09", value: fromHours, onChange: (e) => {
+                            inputHandler(e, setFromHours);
+                        } }),
+                    " :",
+                    react_1.default.createElement("input", { className: `md:w-3/12 w-4/12 px-2 border-[1px] 
+                            ${isInvalidEntry ? "border-red-400" : "border-listBlue"}`, type: "text", maxLength: 2, placeholder: "00", value: fromMinutes, onChange: (e) => {
+                            inputHandler(e, setFromMinutes);
+                        } })),
+                react_1.default.createElement("label", { className: "flex gap-2 text-lg p-2" },
+                    "To",
+                    react_1.default.createElement("input", { className: `md:w-3/12 w-4/12 px-2 border-[1px] 
+                            ${isInvalidEntry ? "border-red-400" : "border-listBlue"}`, type: "text", maxLength: 2, placeholder: "17", value: toHours, onChange: (e) => {
+                            inputHandler(e, setToHours);
+                        } }),
+                    " :",
+                    react_1.default.createElement("input", { className: `md:w-3/12 w-4/12 px-2 border-[1px] 
+                            ${isInvalidEntry ? "border-red-400" : "border-listBlue"}`, type: "text", maxLength: 2, placeholder: "00", value: toMinutes, onChange: (e) => {
+                            inputHandler(e, setToMinutes);
+                        } }))),
+            react_1.default.createElement("button", { className: "bg-listBlue w-fit text-white my-2 py-1 px-2 text-lg hover:brightness-[1.5]", onClick: setTimeFrame }, "Set"),
+            react_1.default.createElement("div", null,
+                react_1.default.createElement("h1", { className: "font-bold text-lg" }, "Current Blue List"),
+                react_1.default.createElement("div", { className: " flex flex-col p-2 text-lg text-gray-500 w-full h-max-1/3 w-full overflow-y-scroll\n                        overflow-x-scroll border-2 border-slate-300" }, (blueListURLs && blueListURLs.length > 0)
+                    ? blueListURLs.map((url, i) => react_1.default.createElement("a", { key: (0, uuid_1.v4)(), "data-id": i, className: `p-1 m-1 w-full whitespace-nowrap ${selectedURLS[i] ? "bg-red-300" : ""}`, onClick: urlClickedHandler }, url))
+                    : react_1.default.createElement("h1", { className: "p-1" }, "Looks like you haven't added any sites to your blue list yet!"))),
+            react_1.default.createElement("div", { className: "flex justify-between" },
+                react_1.default.createElement("button", { className: "bg-listBlue text-white my-2 py-1 px-2 text-lg hover:brightness-[1.5]", onClick: deleteSelected }, "Delete"),
+                react_1.default.createElement("button", { className: "bg-red-600 text-white my-2 py-1 px-2 text-lg hover:brightness-[1.5]", onClick: deleteAll }, "Clear List")))));
+}
+exports["default"] = OptionsPage;
+
+
+/***/ }),
+
 /***/ "./src/options/options.tsx":
 /*!*********************************!*\
   !*** ./src/options/options.tsx ***!
@@ -16,11 +188,11 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const client_1 = __importDefault(__webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js"));
 __webpack_require__(/*! ../styles/index.css */ "./src/styles/index.css");
+const OptionsPage_1 = __importDefault(__webpack_require__(/*! ./OptionsPage */ "./src/options/OptionsPage.tsx"));
 const container = document.createElement("div");
 document.body.appendChild(container);
 const root = client_1.default.createRoot(container);
-root.render(react_1.default.createElement("div", { className: "bg-slate-300 h-screen" },
-    react_1.default.createElement("h1", { className: "text-black" }, "Options")));
+root.render(react_1.default.createElement(OptionsPage_1.default, null));
 
 
 /***/ })
@@ -234,7 +406,7 @@ root.render(react_1.default.createElement("div", { className: "bg-slate-300 h-sc
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_css-loader_dist_runtime_api_js-node_modules_css-loader_dist_runtime_getU-88f9d9","src_styles_index_css"], () => (__webpack_require__("./src/options/options.tsx")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_css-loader_dist_runtime_api_js-node_modules_css-loader_dist_runtime_getU-88f9d9","vendors-node_modules_uuid_dist_commonjs-browser_index_js","src_styles_index_css"], () => (__webpack_require__("./src/options/options.tsx")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()

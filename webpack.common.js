@@ -11,14 +11,14 @@ module.exports = {
     entry: {
         popup: path.resolve("./src/popup/popup.tsx"),
         options: path.resolve("./src/options/options.tsx"),
-        background: path.resolve("./src/background/background.ts")
-
+        background: path.resolve("./src/background/background.ts"),
+        contentScript: path.resolve("./src/contentScript/contentScript.tsx")
     },
     module: {
         rules: [
             {
                 use: "ts-loader",
-                test: /\.tsx$/,
+                test: /\.(tsx|ts)$/,
                 exclude: /node_modules/
             },
             {
@@ -41,6 +41,10 @@ module.exports = {
                         },
                     }
                 ]
+            },
+             {
+                type: 'public',
+                test: /\.(png|jpg|jpeg|gif|woff|woff2|tff|eot|svg)$/,
             },
 
         ]
@@ -65,9 +69,10 @@ module.exports = {
     },
     optimization: {
         splitChunks: {
-            // include all types of chunks
-            chunks: 'all',
-        },
+            chunks(chunk) {
+                return chunk.name !== "contentScript"
+            }
+        }
     }
 }
 

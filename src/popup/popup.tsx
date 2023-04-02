@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
+import MainContainer from "./MainContainer";
+
 
 const container = document.createElement("div");
 document.body.appendChild(container);
@@ -9,5 +10,5 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-    <App/>
+    <MainContainer/>
 );

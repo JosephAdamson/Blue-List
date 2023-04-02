@@ -4,20 +4,22 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "watch": "webpack --watch --progress --config webpack.config.js",
-    "build": "webpack"
+    "watch": "webpack --watch --progress --config webpack.dev.js",
+    "build": "webpack --progress --config webpack.prod.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.225",
     "@types/react": "^18.0.29",
     "@types/react-dom": "^18.0.11",
+    "@types/uuid": "^9.0.1",
     "autoprefixer": "^10.4.14",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.3",
@@ -28,6 +30,7 @@
     "tailwindcss": "^3.2.7",
     "ts-loader": "^9.4.2",
     "webpack": "^5.76.3",
-    "webpack-cli": "^5.0.1"
+    "webpack-cli": "^5.0.1",
+    "webpack-merge": "^5.8.0"
   }
 }

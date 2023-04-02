@@ -2,10 +2,10 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/popup/App.tsx":
-/*!***************************!*\
-  !*** ./src/popup/App.tsx ***!
-  \***************************/
+/***/ "./src/popup/MainContainer.tsx":
+/*!*************************************!*\
+  !*** ./src/popup/MainContainer.tsx ***!
+  \*************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -48,10 +48,6 @@ const utils_1 = __webpack_require__(/*! ../utils */ "./src/utils.ts");
 function App() {
     const [tabURL, setFullURL] = (0, react_1.useState)("");
     const [domainURL, setDomainURL] = (0, react_1.useState)("");
-    const [hours, setHours] = (0, react_1.useState)("");
-    const [minutes, setMinutes] = (0, react_1.useState)("");
-    const [seconds, setSeconds] = (0, react_1.useState)("");
-    const [invalidEntry, setIsInvalidEntry] = (0, react_1.useState)(false);
     const [fullURLSelected, setFullURLSelected] = (0, react_1.useState)(true);
     (0, react_1.useEffect)(() => {
         const fetchURL = () => __awaiter(this, void 0, void 0, function* () {
@@ -73,28 +69,33 @@ function App() {
             setState(userInput);
         }
     };
-    const invalidEntryHandler = () => {
-        setIsInvalidEntry(true);
-        setTimeout(() => {
-            setIsInvalidEntry(false);
-        }, 3000);
-    };
     const addEntry = () => __awaiter(this, void 0, void 0, function* () {
-        // validate user input
-        if (hours && minutes && seconds) {
-            console.log(`${hours}:${minutes}:${seconds}`);
-            console.log(`full url: ${fullURLSelected}`);
-            //const blueList = await chrome.storage.sync.get(["blueList"]);
-        }
-        else {
-            invalidEntryHandler();
-        }
+        console.log(`full url: ${fullURLSelected}`);
+        const url = fullURLSelected ? tabURL : domainURL;
+        chrome.storage.sync.get("blueList", (data) => {
+            if (data.blueList.urls) {
+                chrome.storage.sync.set({ "blueList": {
+                        timeFrom: data.blueList.timeFrom,
+                        timeTo: data.blueList.timeTo,
+                        urls: [...data.blueList.urls, url]
+                    } });
+            }
+            else {
+                chrome.storage.sync.set({ "blueList": {
+                        timeFrom: "09:00",
+                        timeTo: "17:00",
+                        urls: [url]
+                    } });
+            }
+        });
+        const res = yield chrome.storage.sync.get("blueList");
+        console.log(res);
     });
-    return (react_1.default.createElement("div", { className: "flex flex-col bg-white h-[300px] w-[400px] font-opensans" },
+    return (react_1.default.createElement("div", { className: "flex flex-col bg-white h-[280px] w-[400px] font-opensans" },
         react_1.default.createElement("div", { className: "p-6 w-full" },
             react_1.default.createElement("h1", { className: "text-lg font-bold text-listBlue" }, "/BLUE_LIST/"),
             react_1.default.createElement("div", { className: "py-1" },
-                react_1.default.createElement("h1", { className: "text-md text-black font-bold text-md" }, "Would you like to set a daily timeout for the whole site or its domain?")),
+                react_1.default.createElement("h1", { className: "text-md text-black font-bold text-md" }, "Add whole url or its domain to your timeout list?")),
             react_1.default.createElement("div", { className: "flex gap-1 w-full p-2 items-center border-2 border-b-0 border-slate-300" },
                 react_1.default.createElement("input", { className: "overflow-y-scroll w-full text-md p-2", type: "text", readOnly: true, value: tabURL }),
                 react_1.default.createElement("input", { className: "border-2 border-black", type: "radio", name: "url-options", checked: fullURLSelected, onChange: () => {
@@ -107,24 +108,7 @@ function App() {
                         console.log("clicked");
                         setFullURLSelected(fullURLSelected => !fullURLSelected);
                     } })),
-            react_1.default.createElement("div", { className: "w-[200px] my-2" },
-                react_1.default.createElement("div", { className: "flex py-1 w-full text-lg" },
-                    react_1.default.createElement("div", { className: `flex w-1/3 gap-1 border-2 border-r-0 justify-center
-                        ${invalidEntry ? "border-red-500" : "border-slate-300"}` },
-                        react_1.default.createElement("input", { className: "overflow-y-scroll w-4/5 text-md p-1", type: "text", maxLength: 2, placeholder: "00h", onChange: (e) => {
-                                inputHandler(e, setHours);
-                            }, value: hours })),
-                    react_1.default.createElement("div", { className: `flex w-1/3 gap-1 border-2 border-r-0 justify-center 
-                        ${invalidEntry ? "border-red-500" : "border-slate-300"}` },
-                        react_1.default.createElement("input", { className: "overflow-y-scroll w-4/5 text-md p-1", type: "text", maxLength: 2, placeholder: "00m", onChange: (e) => {
-                                inputHandler(e, setMinutes);
-                            }, value: minutes })),
-                    react_1.default.createElement("div", { className: `flex w-1/3 gap-1 border-2 justify-center
-                        ${invalidEntry ? "border-red-500" : "border-slate-300"}` },
-                        react_1.default.createElement("input", { className: "overflow-y-scroll w-4/5 text-md p-1", type: "text", maxLength: 2, placeholder: "00s", onChange: (e) => {
-                                inputHandler(e, setSeconds);
-                            }, value: seconds })))),
-            react_1.default.createElement("button", { className: "bg-listBlue text-white py-1 px-2 text-lg hover:brightness-[1.5]", onClick: addEntry }, "Set"))));
+            react_1.default.createElement("button", { className: "bg-listBlue text-white my-2 py-1 px-2 text-lg hover:brightness-[1.5]", onClick: addEntry }, "Set"))));
 }
 exports["default"] = App;
 
@@ -144,11 +128,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const react_1 = __importDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const client_1 = __importDefault(__webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js"));
-const App_1 = __importDefault(__webpack_require__(/*! ./App */ "./src/popup/App.tsx"));
+const MainContainer_1 = __importDefault(__webpack_require__(/*! ./MainContainer */ "./src/popup/MainContainer.tsx"));
 const container = document.createElement("div");
 document.body.appendChild(container);
 const root = client_1.default.createRoot(container);
-root.render(react_1.default.createElement(App_1.default, null));
+root.render(react_1.default.createElement(MainContainer_1.default, null));
 
 
 /***/ }),
@@ -157,27 +141,30 @@ root.render(react_1.default.createElement(App_1.default, null));
 /*!**********************!*\
   !*** ./src/utils.ts ***!
   \**********************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "getTab": () => (/* binding */ getTab),
-/* harmony export */   "getURL": () => (/* binding */ getURL)
-/* harmony export */ });
+/***/ (function(__unused_webpack_module, exports) {
 
 
-const getTab = async () => {
-    let tab = await chrome.tabs.query({active: true, lastFocusedWindow: true});
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getURL = exports.getTab = void 0;
+const getTab = () => __awaiter(void 0, void 0, void 0, function* () {
+    let [tab] = yield chrome.tabs.query({ active: true, lastFocusedWindow: true });
     return tab;
-}
-
-
-const getURL = async () => {
-    const currentTab = await getTab();
-    return currentTab[0].url;
-}
-
-
+});
+exports.getTab = getTab;
+const getURL = () => __awaiter(void 0, void 0, void 0, function* () {
+    const currentTab = yield getTab();
+    return currentTab.url;
+});
+exports.getURL = getURL;
 
 
 /***/ })
