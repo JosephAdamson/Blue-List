@@ -56,12 +56,12 @@ export default function OptionsPage() {
 
 
     const deleteSelected = async () => {
-        const currentBlueList = await fetchBlueListData();
+        const currentData = await fetchBlueListData();
         const updatedURLs = blueListURLs.filter((url, i) => !selectedURLS[i]);
         chrome.storage.sync.set({
             "blueList": {
-                timeFrom: currentBlueList.timeFrom,
-                timeTo: currentBlueList.timeTo,
+                timeFrom: currentData["blueList"].timeFrom,
+                timeTo: currentData["blueList"].timeTo,
                 urls: [...updatedURLs]
             }
         });
@@ -72,11 +72,11 @@ export default function OptionsPage() {
 
 
     const deleteAll = async () => {
-        const currentBlueList = await fetchBlueListData();
+        const currentData = await fetchBlueListData();
         await chrome.storage.sync.set({
             "blueList": { 
-                timeFrom: currentBlueList.timeFrom,
-                timeTo: currentBlueList.timeTo,
+                timeFrom: currentData["blueList"].timeFrom,
+                timeTo: currentData["blueList"].timeTo,
                 urls: []
             }
         });

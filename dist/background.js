@@ -32,7 +32,9 @@ chrome.tabs.onUpdated.addListener((tabID, changeInfo, tab) => __awaiter(void 0, 
             });
         }
         else {
-            console.log(data);
+            // get current list of urls
+            const blueList = data.blueList;
+            console.log(blueList);
         }
     });
     // if (tab.url === "https://imgur.com/") {

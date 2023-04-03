@@ -16,9 +16,12 @@ chrome.tabs.onUpdated.addListener(async (tabID: number,
                 }
             })
         } else {
-            console.log(data);
+            // get current list of urls
+            const blueList = data.blueList;
+            console.log(blueList);
         }
-    })
+    });
+   
 
     // if (tab.url === "https://imgur.com/") {
     //     console.log(tab.url);

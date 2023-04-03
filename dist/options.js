@@ -91,12 +91,12 @@ function OptionsPage() {
         return blueListData;
     });
     const deleteSelected = () => __awaiter(this, void 0, void 0, function* () {
-        const currentBlueList = yield fetchBlueListData();
+        const currentData = yield fetchBlueListData();
         const updatedURLs = blueListURLs.filter((url, i) => !selectedURLS[i]);
         chrome.storage.sync.set({
             "blueList": {
-                timeFrom: currentBlueList.timeFrom,
-                timeTo: currentBlueList.timeTo,
+                timeFrom: currentData["blueList"].timeFrom,
+                timeTo: currentData["blueList"].timeTo,
                 urls: [...updatedURLs]
             }
         });
@@ -104,11 +104,11 @@ function OptionsPage() {
         setSelectedURLS(Array.from({ length: updatedURLs.length }, (_, i) => false));
     });
     const deleteAll = () => __awaiter(this, void 0, void 0, function* () {
-        const currentBlueList = yield fetchBlueListData();
+        const currentData = yield fetchBlueListData();
         yield chrome.storage.sync.set({
             "blueList": {
-                timeFrom: currentBlueList.timeFrom,
-                timeTo: currentBlueList.timeTo,
+                timeFrom: currentData["blueList"].timeFrom,
+                timeTo: currentData["blueList"].timeTo,
                 urls: []
             }
         });
