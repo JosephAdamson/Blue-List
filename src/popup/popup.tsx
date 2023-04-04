@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import MainContainer from "./MainContainer";
+import PopupContainer from "./PopupContainer";
 
 
 const container = document.createElement("div");
@@ -10,5 +10,5 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-    <MainContainer/>
+    <PopupContainer/>
 );

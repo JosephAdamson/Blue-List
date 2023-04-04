@@ -1,11 +1,16 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
 import { v4 as uuidv4 } from 'uuid';
 
+
 export default function OptionsPage() {
     const [fromHours, setFromHours] = useState<string>("");
     const [fromMinutes, setFromMinutes] = useState<string>("");
     const [toHours, setToHours] = useState<string>("");
     const [toMinutes, setToMinutes] = useState<string>("");
+    const [fromHoursPlaceHolder, setFromHoursPlaceHolder] = useState<string>("");
+    const [fromMinutesPlaceHolder, setFromMinutesPlaceHolder] = useState<string>("");
+    const [toHoursPlaceHolder, setToHoursPlaceHolder] = useState<string>("");
+    const [toMinutesPlaceHolder, setToMinutesPlaceHolder] = useState<string>("");
     const [blueListURLs, setBLueListURLS] = useState<string[]>([]);
     const [isInvalidEntry, setIsInvalidEntry] = useState<boolean>(false);
     const [selectedURLS, setSelectedURLS] = useState<boolean[]>([]);
@@ -30,19 +35,22 @@ export default function OptionsPage() {
     
     const setTimeFrame = async () => {
         if (fromHours && fromMinutes && toHours && toMinutes) {
-            console.log(`From ${fromHours}:${fromMinutes} to ${toHours}:${toMinutes}`);
             const data = await fetchBlueListData();
             chrome.storage.sync.set({
                 "blueList": {
                     timeFrom: `${fromHours}:${fromMinutes}`,
                     timeTo: `${toHours}:${toMinutes}`,
-                    urls: data.urls
+                    urls: data["blueList"].urls
                 }
             });
             setFromHours("");
             setFromMinutes("");
             setToHours("");
             setToMinutes("");
+            setFromHoursPlaceHolder(fromHours);
+            setFromMinutesPlaceHolder(fromMinutes);
+            setToHoursPlaceHolder(toHours);
+            setToMinutesPlaceHolder(toMinutes);
         } else {
             invalidEntryHandler();
         }
@@ -101,6 +109,10 @@ export default function OptionsPage() {
             setBLueListURLS(data["blueList"].urls);
             setSelectedURLS(Array.from({length: data["blueList"].urls.length}, 
                 (_, i) => false));
+            setFromHoursPlaceHolder(data["blueList"].timeFrom.split(":")[0]);
+            setFromMinutesPlaceHolder(data["blueList"].timeFrom.split(":")[1]);
+            setToHoursPlaceHolder(data["blueList"].timeTo.split(":")[0]);
+            setToMinutesPlaceHolder(data["blueList"].timeTo.split(":")[1]);
         }
         fetchData();
     }, []);
@@ -108,33 +120,33 @@ export default function OptionsPage() {
 
     return (
         <div className="flex flex-col items-center bg-offWhite h-screen w-full font-openSans">
-            <div className="flex h-20 m-2 px-4 w-full md:w-2/3">
-                <img className="h-full" src="favicon-48x48.png" alt="icon" />
-            </div>
             <div className="flex md:w-2/3 h-fit w-screen my-2 p-6 flex-col gap-4">
+                <div className="flex w-full md:w-2/3">
+                    <h1 className="text-listBlue font-bold text-xl">/BLUE_LIST/</h1>
+                </div>
                 <h1 className="font-bold text-lg">Select you time out period</h1>
                 <div className="flex w-full border-slate-300 border-2">
                     <label className="flex gap-2 text-lg p-2">From
                         <input className={`md:w-3/12 w-4/12 px-2 border-[1px] 
                             ${isInvalidEntry ? "border-red-400" : "border-listBlue"}`} type="text"  maxLength={2} 
-                            placeholder={"09"} value={fromHours} onChange={(e) => {
+                            placeholder={fromHoursPlaceHolder} value={fromHours} onChange={(e) => {
                                 inputHandler(e, setFromHours);
                         }} /> :
                         <input className={`md:w-3/12 w-4/12 px-2 border-[1px] 
                             ${isInvalidEntry ? "border-red-400" : "border-listBlue"}`} type="text"  maxLength={2} 
-                            placeholder={"00"} value={fromMinutes} onChange={(e) => {
+                            placeholder={fromMinutesPlaceHolder} value={fromMinutes} onChange={(e) => {
                                 inputHandler(e, setFromMinutes);
                         }} />
                     </label>
                     <label className="flex gap-2 text-lg p-2">To
                         <input className={`md:w-3/12 w-4/12 px-2 border-[1px] 
                             ${isInvalidEntry ? "border-red-400" : "border-listBlue"}`} type="text"  maxLength={2}
-                                placeholder={"17"} value={toHours} onChange={(e) => {
+                                placeholder={toHoursPlaceHolder} value={toHours} onChange={(e) => {
                             inputHandler(e, setToHours);
                         }} /> :
                         <input className={`md:w-3/12 w-4/12 px-2 border-[1px] 
                             ${isInvalidEntry ? "border-red-400" : "border-listBlue"}`} type="text"  maxLength={2}
-                                placeholder={"00"} value={toMinutes} onChange={(e) => {
+                                placeholder={toMinutesPlaceHolder} value={toMinutes} onChange={(e) => {
                             inputHandler(e, setToMinutes);
                         }} />
                     </label>
@@ -142,7 +154,7 @@ export default function OptionsPage() {
                 <button className="bg-listBlue w-fit text-white my-2 py-1 px-2 text-lg hover:brightness-[1.5]"
                     onClick={setTimeFrame}>Set</button>
                 <div>
-                    <h1 className="font-bold text-lg">Current Blue List</h1>
+                    <h1 className="font-bold text-lg">Current websites on timeout list</h1>
                     <div className=" flex flex-col p-2 text-lg text-gray-500 w-full h-max-1/3 w-full overflow-y-scroll
                         overflow-x-scroll border-2 border-slate-300">
                             {(blueListURLs && blueListURLs.length > 0)

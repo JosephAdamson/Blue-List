@@ -1,4 +1,4 @@
-import { getTab } from "../utils";
+import { getTab, buildTimeStamp } from "../utils";
 
 
 chrome.tabs.onUpdated.addListener(async (tabID: number,
@@ -6,7 +6,7 @@ chrome.tabs.onUpdated.addListener(async (tabID: number,
     tab: chrome.tabs.Tab) => {
 
     // for initial installation add data to chrome storage
-    chrome.storage.sync.get("blueList", (data) => {
+    chrome.storage.sync.get("blueList", async (data) => {
         if (!data.blueList) {
             chrome.storage.sync.set({
                 "blueList": {
@@ -14,38 +14,39 @@ chrome.tabs.onUpdated.addListener(async (tabID: number,
                     timeTo: "17:00",
                     urls: []
                 }
-            })
+            });
+
         } else {
-            // get current list of urls
             const blueList = data.blueList;
-            console.log(blueList);
+            if (tab.url) { 
+                const currentURL = new URL(tab.url);
+                console.log(currentURL);
+
+                if (blueList.urls.includes(currentURL.href) || blueList.urls.includes(`${currentURL.origin}/`)) {
+
+                    const current = new Date();
+                    const from = new Date(buildTimeStamp(blueList["timeFrom"]));
+                    const to = new Date(buildTimeStamp(blueList["timeTo"]));
+    
+                    if (current >= from && current <= to) {
+                        const options: chrome.notifications.NotificationOptions<true> = {
+                            iconUrl: "favicon-48x48.png",
+                            title: "OOPS",
+                            message: `Looks like you are trying to access a site on your timeout list, check out options page for more details`,
+                            type: "basic",
+                            silent: false,
+                            priority: 2
+                        }
+                        chrome.notifications.create(options);
+                        if (tab.id) {
+                            chrome.tabs.update(tab.id, { url: "chrome://extensions" });
+                        }
+                    }
+                }
+
+            }
         }
     });
-   
-
-    // if (tab.url === "https://imgur.com/") {
-    //     console.log(tab.url);
-
-    //     chrome.alarms.create({
-    //         delayInMinutes: 1
-    //     });
-
-    //     chrome.alarms.onAlarm.addListener(() => {
-
-    //         // create notification
-    //         const options: chrome.notifications.NotificationOptions<true> = {
-    //             iconUrl: "favicon-48x48.png",
-    //             title: "my notification",
-    //             message: "hello this is my message",
-    //             type: "basic",
-    //             silent: false
-    //         }
-    //         chrome.notifications.create(options);
-    //         if (tab.id) {
-    //             chrome.tabs.update(tab.id, { url: "chrome://extensions" });
-    //         }
-    //     });
-    // }
 });
 
 

@@ -1,10 +1,10 @@
-import React, { useState, useEffect, ChangeEvent } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/index.css";
 import { getURL } from "../utils"
 
 export default function App() {
     const [tabURL, setFullURL] = useState<string>("");
-    const [domainURL, setDomainURL] = useState<string | undefined>("");
+    const [domainURL, setDomainURL] = useState<string>("");
     const [fullURLSelected, setFullURLSelected] = useState<boolean>(true);
 
 
@@ -19,16 +19,6 @@ export default function App() {
         }
         fetchURL();
     }, []);
-
-
-    const inputHandler = (e: ChangeEvent<HTMLInputElement>, setState: (state: string) => void) => {
-        e.preventDefault();
-        const userInput = e.currentTarget.value;
-        if ((userInput.match(/\d/g) && userInput.match(/\d/g)?.length === userInput.length)
-            || userInput === "") {
-            setState(userInput);
-        }
-    }
 
 
     const addEntry = async () => {
