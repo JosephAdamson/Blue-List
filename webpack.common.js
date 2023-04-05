@@ -41,7 +41,7 @@ module.exports = {
                     }
                 ]
             },
-             {
+            {
                 type: 'public',
                 test: /\.(png|jpg|jpeg|gif|woff|woff2|tff|eot|svg)$/,
             },

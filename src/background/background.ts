@@ -20,7 +20,6 @@ chrome.tabs.onUpdated.addListener(async (tabID: number,
             const blueList = data.blueList;
             if (tab.url) { 
                 const currentURL = new URL(tab.url);
-                console.log(currentURL);
 
                 if (blueList.urls.includes(currentURL.href) || blueList.urls.includes(`${currentURL.origin}/`)) {
 
