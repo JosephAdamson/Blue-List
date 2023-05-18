@@ -19,15 +19,15 @@ chrome.tabs.onUpdated.addListener(async (tabID: number,
             });
 
         } else {
-            const blueList = data.blueList;
             if (tab.url) { 
                 const currentURL = new URL(tab.url);
 
-                if (blueList.urls.includes(currentURL.href) || blueList.urls.includes(`${currentURL.origin}/`)) {
+                if (data["blueList"].urls.includes(currentURL.href) ||
+                data["blueList"].urls.includes(`${currentURL.origin}/`)) {
 
                     const current = new Date();
-                    const from = new Date(buildTimeStamp(blueList["timeFrom"]));
-                    const to = new Date(buildTimeStamp(blueList["timeTo"]));
+                    const from = new Date(buildTimeStamp(data["blueList"].timeFrom));
+                    const to = new Date(buildTimeStamp(data["blueList"].timeTo));
     
                     if (current >= from && current <= to) {
                         const options: chrome.notifications.NotificationOptions<true> = {
@@ -40,7 +40,7 @@ chrome.tabs.onUpdated.addListener(async (tabID: number,
                         }
                         chrome.notifications.create(options);
                         if (tab.id) {
-                            chrome.tabs.update(tab.id, { url: "chrome://extensions" });
+                            chrome.tabs.update(tab.id, { url: data["blueList"].redirectURL });
                         }
                     }
                 }

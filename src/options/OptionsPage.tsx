@@ -72,6 +72,9 @@ export default function OptionsPage() {
                 urls: data["blueList"].urls,
                 redirectURL: redirectURL
             });
+            // check 
+            const d = await fetchBlueListData();
+            console.log(d);
         } else {
             invalidEntryHandler(setIsInvalidRedirectURL)
         }
