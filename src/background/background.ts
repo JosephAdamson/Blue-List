@@ -17,7 +17,6 @@ chrome.tabs.onUpdated.addListener(async (tabID: number,
                     redirectURL: "chrome://extensions"
                 }
             });
-
         } else {
             if (tab.url) { 
                 const currentURL = new URL(tab.url);
