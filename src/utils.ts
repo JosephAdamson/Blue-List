@@ -26,8 +26,19 @@ const buildTimeStamp = (time: string) => {
 }
 
 
+const isURL = (url: string) => {
+    try {
+        const providedUrl = new URL(url); 
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+
 export {
     getTab,
     getURL,
-    buildTimeStamp
+    buildTimeStamp,
+    isURL
 }

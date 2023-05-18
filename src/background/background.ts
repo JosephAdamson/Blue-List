@@ -12,7 +12,9 @@ chrome.tabs.onUpdated.addListener(async (tabID: number,
                 "blueList": {
                     timeFrom: "09:00",
                     timeTo: "17:00",
-                    urls: []
+                    urls: [],
+                    // use extension tab as default landing page
+                    redirectURL: "chrome://extensions"
                 }
             });
 
