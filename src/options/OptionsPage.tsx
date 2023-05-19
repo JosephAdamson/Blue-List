@@ -222,8 +222,7 @@ export default function OptionsPage() {
                             ? blueListURLs.map((url, i) => <a key={uuidv4()} data-id={i}
                                 className={`p-1 m-1 w-full whitespace-nowrap ${selectedURLS[i] ? "bg-red-300" : ""}`}
                                 onClick={urlClickedHandler}>{url}</a>)
-                            : <h1 className="p-1">Looks like you haven't added any sites to your
-                                blue list yet!</h1>
+                            : <h1 className="p-1">Looks like you haven't added any sites to your blue list yet!</h1>
                         }
                     </div>
                 </div>
