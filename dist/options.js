@@ -45,6 +45,11 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const react_1 = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 const uuid_1 = __webpack_require__(/*! uuid */ "./node_modules/uuid/dist/commonjs-browser/index.js");
 const utils_1 = __webpack_require__(/*! ../utils */ "./src/utils.ts");
+var INPUT;
+(function (INPUT) {
+    INPUT[INPUT["TEXT"] = 0] = "TEXT";
+    INPUT[INPUT["NUMBER"] = 1] = "NUMBER";
+})(INPUT || (INPUT = {}));
 function OptionsPage() {
     const [fromHours, setFromHours] = (0, react_1.useState)("");
     const [fromMinutes, setFromMinutes] = (0, react_1.useState)("");
@@ -57,14 +62,22 @@ function OptionsPage() {
     const [blueListURLs, setBLueListURLS] = (0, react_1.useState)([]);
     const [isInvalidEntry, setIsInvalidEntry] = (0, react_1.useState)(false);
     const [redirectURL, setRedirectURL] = (0, react_1.useState)("");
+    const [redirectURLPlaceholder, setRedirectURLPlaceholder] = (0, react_1.useState)("");
     const [isInvalidRedirectURL, setIsInvalidRedirectURL] = (0, react_1.useState)(false);
     const [selectedURLS, setSelectedURLS] = (0, react_1.useState)([]);
-    const inputHandler = (e, setState) => {
+    const inputHandler = (e, setState, inputType) => {
         var _a;
         e.preventDefault();
         const userInput = e.currentTarget.value;
-        if ((((_a = userInput.match(/\d/g)) === null || _a === void 0 ? void 0 : _a.length) === userInput.length) || userInput === "") {
-            setState(userInput);
+        if (inputType === INPUT.NUMBER) {
+            if ((((_a = userInput.match(/\d/g)) === null || _a === void 0 ? void 0 : _a.length) === userInput.length) || userInput === "") {
+                setState(userInput);
+            }
+        }
+        else {
+            if ((userInput.length === userInput.length) || userInput === "") {
+                setState(userInput);
+            }
         }
     };
     const invalidEntryHandler = (handler) => {
@@ -100,12 +113,16 @@ function OptionsPage() {
     const redirectURLHandler = () => __awaiter(this, void 0, void 0, function* () {
         if ((0, utils_1.isURL)(redirectURL)) {
             const data = yield fetchBlueListData();
+            console.log(data["blueList"].timeFrom);
             chrome.storage.sync.set({
-                timeFrom: data["blueList"].timeFrom,
-                timeTo: data["blueList"].timeTo,
-                urls: data["blueList"].urls,
-                redirectURL: redirectURL
+                "blueList": {
+                    timeFrom: data["blueList"].timeFrom,
+                    timeTo: data["blueList"].timeTo,
+                    urls: data["blueList"].urls,
+                    redirectURL: redirectURL
+                }
             });
+            setRedirectURL("");
         }
         else {
             invalidEntryHandler(setIsInvalidRedirectURL);
@@ -122,7 +139,8 @@ function OptionsPage() {
             "blueList": {
                 timeFrom: currentData["blueList"].timeFrom,
                 timeTo: currentData["blueList"].timeTo,
-                urls: [...updatedURLs]
+                urls: [...updatedURLs],
+                redirectURL: currentData["blueList"].redirectURL
             }
         });
         setBLueListURLS(updatedURLs);
@@ -134,7 +152,8 @@ function OptionsPage() {
             "blueList": {
                 timeFrom: currentData["blueList"].timeFrom,
                 timeTo: currentData["blueList"].timeTo,
-                urls: []
+                urls: [],
+                redirectURL: currentData["blueList"].redirectURL
             }
         });
         const res = yield chrome.storage.sync.get("blueList");
@@ -157,6 +176,8 @@ function OptionsPage() {
             setFromMinutesPlaceHolder(data["blueList"].timeFrom.split(":")[1]);
             setToHoursPlaceHolder(data["blueList"].timeTo.split(":")[0]);
             setToMinutesPlaceHolder(data["blueList"].timeTo.split(":")[1]);
+            setRedirectURLPlaceholder(data["blueList"].redirectURL);
+            console.log(data);
         });
         fetchData();
     }, []);
@@ -172,34 +193,34 @@ function OptionsPage() {
                         react_1.default.createElement("label", { className: "flex gap-2 text-lg" },
                             react_1.default.createElement("input", { className: `md:w-3/12 w-2/12 px-2 border-[1px] text-lg 
                                 ${isInvalidEntry ? "border-red-400" : "border-listBlue"}`, type: "text", maxLength: 2, placeholder: fromHoursPlaceHolder, value: fromHours, onChange: (e) => {
-                                    inputHandler(e, setFromHours);
+                                    inputHandler(e, setFromHours, INPUT.NUMBER);
                                 } }),
                             " :",
                             react_1.default.createElement("input", { className: `md:w-3/12 w-2/12 px-2 border-[1px] text-lg 
                                 ${isInvalidEntry ? "border-red-400" : "border-listBlue"}`, type: "text", maxLength: 2, placeholder: fromMinutesPlaceHolder, value: fromMinutes, onChange: (e) => {
-                                    inputHandler(e, setFromMinutes);
+                                    inputHandler(e, setFromMinutes, INPUT.NUMBER);
                                 } }))),
                     react_1.default.createElement("div", { className: "flex" },
                         react_1.default.createElement("label", { className: "text-lg mr-9 md:mr-2" }, "To"),
                         react_1.default.createElement("label", { className: "flex gap-2 text-lg" },
                             react_1.default.createElement("input", { className: `md:w-3/12 w-2/12 px-2 border-[1px] text-lg 
                                 ${isInvalidEntry ? "border-red-400" : "border-listBlue"}`, type: "text", maxLength: 2, placeholder: toHoursPlaceHolder, value: toHours, onChange: (e) => {
-                                    inputHandler(e, setToHours);
+                                    inputHandler(e, setToHours, INPUT.NUMBER);
                                 } }),
                             " :",
                             react_1.default.createElement("input", { className: `md:w-3/12 w-2/12 px-2 border-[1px] text-lg 
                                 ${isInvalidEntry ? "border-red-400" : "border-listBlue"}`, type: "text", maxLength: 2, placeholder: toMinutesPlaceHolder, value: toMinutes, onChange: (e) => {
-                                    inputHandler(e, setToMinutes);
+                                    inputHandler(e, setToMinutes, INPUT.NUMBER);
                                 } }))))),
             react_1.default.createElement("button", { className: "bg-listBlue w-fit text-white my-2 py-1 px-2 text-lg hover:brightness-[1.5]", onClick: setTimeFrame }, "Set"),
             react_1.default.createElement("div", { className: "flex flex-col gap-2" },
                 react_1.default.createElement("h1", { className: "font-bold text-lg" }, "Select the page you want the extension to re-direct to"),
-                react_1.default.createElement("input", { className: `w-full px-2 border-[1px] py-2
-                        ${isInvalidRedirectURL ? "border-red-400" : "border-listBlue"}`, type: "text" })),
+                react_1.default.createElement("input", { className: `w-full px-2 border-[1px] py-2 text-lg 
+                        ${isInvalidRedirectURL ? "border-red-400" : "border-listBlue"}`, type: "text", onChange: (e) => { inputHandler(e, setRedirectURL, INPUT.TEXT); }, placeholder: redirectURLPlaceholder, value: redirectURL })),
             react_1.default.createElement("button", { className: "bg-listBlue w-fit text-white my-2 py-1 px-2 text-lg hover:brightness-[1.5]", onClick: redirectURLHandler }, "Set"),
             react_1.default.createElement("div", { className: "flex flex-col gap-2" },
                 react_1.default.createElement("h1", { className: "font-bold text-lg" }, "Current websites on timeout list"),
-                react_1.default.createElement("div", { className: " flex flex-col p-2 text-lg text-gray-500 w-full min-h-[100px]\n                    max-h-1/3 w-full overflow-y-auto overflow-x-auto border-[1px] border-listBlue" }, (blueListURLs && blueListURLs.length > 0)
+                react_1.default.createElement("div", { className: " flex flex-col p-2 text-lg text-gray-500 w-full min-h-[100px]\n                        max-h-1/3 w-full overflow-y-auto overflow-x-auto border-[1px] border-listBlue" }, (blueListURLs && blueListURLs.length > 0)
                     ? blueListURLs.map((url, i) => react_1.default.createElement("a", { key: (0, uuid_1.v4)(), "data-id": i, className: `p-1 m-1 w-full whitespace-nowrap ${selectedURLS[i] ? "bg-red-300" : ""}`, onClick: urlClickedHandler }, url))
                     : react_1.default.createElement("h1", { className: "p-1" }, "Looks like you haven't added any sites to your blue list yet!"))),
             react_1.default.createElement("div", { className: "flex justify-between" },

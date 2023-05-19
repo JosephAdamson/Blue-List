@@ -50,13 +50,19 @@ function App() {
     const [domainURL, setDomainURL] = (0, react_1.useState)("");
     const [fullURLSelected, setFullURLSelected] = (0, react_1.useState)(true);
     const [buttonClicked, setButtonClicked] = (0, react_1.useState)(false);
+    const [onExtensionsPage, setOnExtensionsPage] = (0, react_1.useState)(false);
     (0, react_1.useEffect)(() => {
         const fetchURL = () => __awaiter(this, void 0, void 0, function* () {
             const urlStr = yield (0, utils_1.getURL)();
             if (urlStr) {
-                setFullURL(urlStr);
-                const url = new URL(urlStr);
-                setDomainURL(`${url.protocol}//${url.hostname}`);
+                if (urlStr === "chrome://extensions/" || urlStr.includes("chrome-extension://")) {
+                    setOnExtensionsPage(true);
+                }
+                else {
+                    setFullURL(urlStr);
+                    const url = new URL(urlStr);
+                    setDomainURL(`${url.protocol}//${url.hostname}`);
+                }
             }
         });
         fetchURL();
@@ -70,7 +76,8 @@ function App() {
                     "blueList": {
                         timeFrom: data.blueList.timeFrom,
                         timeTo: data.blueList.timeTo,
-                        urls: [...data.blueList.urls, url]
+                        urls: [...data.blueList.urls, url.trim()],
+                        redirectURL: data.blueList.redirectURL
                     }
                 });
             }
@@ -89,27 +96,33 @@ function App() {
         console.log(res);
         chrome.tabs.reload();
     });
-    return (react_1.default.createElement("div", { className: "flex flex-col bg-white h-[280px] w-[400px] font-opensans" },
-        react_1.default.createElement("div", { className: "p-6 w-full" },
-            react_1.default.createElement("h1", { className: "text-lg font-bold text-listBlue" }, "/BLUE_LIST/"),
-            react_1.default.createElement("div", { className: "py-1" },
-                react_1.default.createElement("h1", { className: "text-md text-black font-bold text-md" }, "Add whole url or its domain to your timeout list?")),
-            react_1.default.createElement("div", { className: "flex gap-1 w-full p-2 items-center border-2 border-b-0 border-slate-300" },
-                react_1.default.createElement("input", { className: "overflow-y-scroll w-full text-md p-2", type: "text", readOnly: true, value: tabURL }),
-                react_1.default.createElement("input", { className: "border-2 border-black", type: "radio", name: "url-options", checked: fullURLSelected, onChange: () => {
-                        console.log("clacked");
-                        setFullURLSelected(fullURLSelected => !fullURLSelected);
-                    } })),
-            react_1.default.createElement("div", { className: "flex gap-1 w-full p-2 items-center border-2 border-slate-300" },
-                react_1.default.createElement("input", { className: "overflow-y-scroll w-full text-md p-2", type: "text", readOnly: true, value: domainURL }),
-                react_1.default.createElement("input", { className: "border-2 border-black", type: "radio", name: "url-options", onChange: () => {
-                        console.log("clicked");
-                        setFullURLSelected(fullURLSelected => !fullURLSelected);
-                    } })),
-            !buttonClicked
-                ? react_1.default.createElement("button", { className: "bg-listBlue text-white my-2 py-1 px-2 text-lg hover:brightness-[1.5]", onClick: addEntry }, "Set")
-                : react_1.default.createElement("div", { className: "h-10 w-10 border-2 border-slate-300 my-1 p-1" },
-                    react_1.default.createElement("img", { src: "tick.png", alt: "confirmed" })))));
+    return (react_1.default.createElement("div", null, onExtensionsPage ?
+        react_1.default.createElement("div", { className: "flex flex-col bg-white h-[180px] w-[400px] font-opensans" },
+            react_1.default.createElement("div", { className: "p-6 w-full" },
+                react_1.default.createElement("h1", { className: "text-lg font-bold text-listBlue" }, "/BLUE_LIST/"),
+                react_1.default.createElement("div", { className: "flex justify-center items-center h-full w-full" },
+                    react_1.default.createElement("h1", { className: "text-md border-2 border-slate-300 p-2" }, "Vist sites that you want to put out on the timeout list and click the extension icon! You can manage your current blue list configs by right-clicking the extension icon and selection 'options'")))) :
+        react_1.default.createElement("div", { className: "flex flex-col bg-white w-[400px] font-opensans" },
+            react_1.default.createElement("div", { className: "p-6 w-full" },
+                react_1.default.createElement("h1", { className: "text-lg font-bold text-listBlue" }, "/BLUE_LIST/"),
+                react_1.default.createElement("div", { className: "py-1" },
+                    react_1.default.createElement("h1", { className: "text-md text-black font-bold text-md" }, "Add whole url or its domain to your timeout list?")),
+                react_1.default.createElement("div", { className: "flex gap-1 w-full p-2 items-center border-2 border-b-0 border-slate-300" },
+                    react_1.default.createElement("input", { className: "overflow-y-scroll w-full text-md p-2", type: "text", readOnly: true, value: tabURL }),
+                    react_1.default.createElement("input", { className: "border-2 border-black", type: "radio", name: "url-options", checked: fullURLSelected, onChange: () => {
+                            console.log("clacked");
+                            setFullURLSelected(fullURLSelected => !fullURLSelected);
+                        } })),
+                react_1.default.createElement("div", { className: "flex gap-1 w-full p-2 items-center border-2 border-slate-300" },
+                    react_1.default.createElement("input", { className: "overflow-y-scroll w-full text-md p-2", type: "text", readOnly: true, value: domainURL }),
+                    react_1.default.createElement("input", { className: "border-2 border-black", type: "radio", name: "url-options", onChange: () => {
+                            console.log("clicked");
+                            setFullURLSelected(fullURLSelected => !fullURLSelected);
+                        } })),
+                !buttonClicked
+                    ? react_1.default.createElement("button", { className: "bg-listBlue text-white my-2 py-1 px-2 text-lg hover:brightness-[1.5]", onClick: addEntry }, "Set")
+                    : react_1.default.createElement("div", { className: "h-10 w-10 border-2 border-slate-300 my-1 p-1" },
+                        react_1.default.createElement("img", { src: "tick.png", alt: "confirmed" }))))));
 }
 exports["default"] = App;
 

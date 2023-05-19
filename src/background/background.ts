@@ -4,7 +4,6 @@ import { getTab, buildTimeStamp } from "../utils";
 chrome.tabs.onUpdated.addListener(async (tabID: number,
     changeInfo: chrome.tabs.TabChangeInfo,
     tab: chrome.tabs.Tab) => {
-
     // for initial installation add data to chrome storage
     chrome.storage.sync.get("blueList", async (data) => {
         if (!data.blueList) {
@@ -22,7 +21,7 @@ chrome.tabs.onUpdated.addListener(async (tabID: number,
                 const currentURL = new URL(tab.url);
 
                 if (data["blueList"].urls.includes(currentURL.href) ||
-                data["blueList"].urls.includes(`${currentURL.origin}/`)) {
+                    data["blueList"].urls.includes(`${currentURL.origin}`)) {
 
                     const current = new Date();
                     const from = new Date(buildTimeStamp(data["blueList"].timeFrom));

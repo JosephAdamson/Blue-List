@@ -35,13 +35,13 @@ chrome.tabs.onUpdated.addListener((tabID, changeInfo, tab) => __awaiter(void 0, 
             });
         }
         else {
-            const blueList = data.blueList;
             if (tab.url) {
                 const currentURL = new URL(tab.url);
-                if (blueList.urls.includes(currentURL.href) || blueList.urls.includes(`${currentURL.origin}/`)) {
+                if (data["blueList"].urls.includes(currentURL.href) ||
+                    data["blueList"].urls.includes(`${currentURL.origin}`)) {
                     const current = new Date();
-                    const from = new Date((0, utils_1.buildTimeStamp)(blueList["timeFrom"]));
-                    const to = new Date((0, utils_1.buildTimeStamp)(blueList["timeTo"]));
+                    const from = new Date((0, utils_1.buildTimeStamp)(data["blueList"].timeFrom));
+                    const to = new Date((0, utils_1.buildTimeStamp)(data["blueList"].timeTo));
                     if (current >= from && current <= to) {
                         const options = {
                             iconUrl: "favicon-48x48.png",
@@ -53,7 +53,7 @@ chrome.tabs.onUpdated.addListener((tabID, changeInfo, tab) => __awaiter(void 0, 
                         };
                         chrome.notifications.create(options);
                         if (tab.id) {
-                            chrome.tabs.update(tab.id, { url: "chrome://extensions" });
+                            chrome.tabs.update(tab.id, { url: data["blueList"].redirectURL });
                         }
                     }
                 }

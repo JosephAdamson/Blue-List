@@ -2,6 +2,10 @@ import React, { useState, useEffect, ChangeEvent } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import { isURL } from "../utils";
 
+enum INPUT {
+    TEXT,
+    NUMBER
+}
 
 export default function OptionsPage() {
     const [fromHours, setFromHours] = useState<string>("");
@@ -15,15 +19,24 @@ export default function OptionsPage() {
     const [blueListURLs, setBLueListURLS] = useState<string[]>([]);
     const [isInvalidEntry, setIsInvalidEntry] = useState<boolean>(false);
     const [redirectURL, setRedirectURL] = useState<string>("");
+    const [redirectURLPlaceholder, setRedirectURLPlaceholder] = useState<string>("");
     const [isInvalidRedirectURL, setIsInvalidRedirectURL] = useState<boolean>(false);
     const [selectedURLS, setSelectedURLS] = useState<boolean[]>([]);
 
 
-    const inputHandler = (e: ChangeEvent<HTMLInputElement>, setState: (state: string) => void) => {
+    const inputHandler = (e: ChangeEvent<HTMLInputElement>, 
+                        setState: (state: string) => void, 
+                        inputType: INPUT) => {
         e.preventDefault();
         const userInput = e.currentTarget.value;
-        if ((userInput.match(/\d/g)?.length === userInput.length) || userInput === "") {
-            setState(userInput);
+        if (inputType === INPUT.NUMBER) {
+            if ((userInput.match(/\d/g)?.length === userInput.length) || userInput === "") {
+                setState(userInput);
+            }
+        } else {
+            if ((userInput.length === userInput.length) || userInput === "") {
+                setState(userInput);
+            }
         }
     }
 
@@ -66,15 +79,16 @@ export default function OptionsPage() {
     const redirectURLHandler = async () => {
         if (isURL(redirectURL)) {
             const data = await fetchBlueListData();
-            chrome.storage.sync.set({
-                timeFrom: data["blueList"].timeFrom,
-                timeTo: data["blueList"].timeTo,
-                urls: data["blueList"].urls,
-                redirectURL: redirectURL
+            console.log(data["blueList"].timeFrom);
+            chrome.storage.sync.set({ 
+                "blueList": {
+                    timeFrom: data["blueList"].timeFrom,
+                    timeTo: data["blueList"].timeTo,
+                    urls: data["blueList"].urls,
+                    redirectURL: redirectURL
+                }
             });
-            // check 
-            const d = await fetchBlueListData();
-            console.log(d);
+            setRedirectURL("");
         } else {
             invalidEntryHandler(setIsInvalidRedirectURL)
         }
@@ -94,7 +108,8 @@ export default function OptionsPage() {
             "blueList": {
                 timeFrom: currentData["blueList"].timeFrom,
                 timeTo: currentData["blueList"].timeTo,
-                urls: [...updatedURLs]
+                urls: [...updatedURLs],
+                redirectURL: currentData["blueList"].redirectURL
             }
         });
         setBLueListURLS(updatedURLs);
@@ -109,7 +124,8 @@ export default function OptionsPage() {
             "blueList": {
                 timeFrom: currentData["blueList"].timeFrom,
                 timeTo: currentData["blueList"].timeTo,
-                urls: []
+                urls: [],
+                redirectURL: currentData["blueList"].redirectURL
             }
         });
         const res = await chrome.storage.sync.get("blueList");
@@ -137,6 +153,8 @@ export default function OptionsPage() {
             setFromMinutesPlaceHolder(data["blueList"].timeFrom.split(":")[1]);
             setToHoursPlaceHolder(data["blueList"].timeTo.split(":")[0]);
             setToMinutesPlaceHolder(data["blueList"].timeTo.split(":")[1]);
+            setRedirectURLPlaceholder(data["blueList"].redirectURL);
+            console.log(data);
         }
         fetchData();
     }, []);
@@ -157,12 +175,12 @@ export default function OptionsPage() {
                                 <input className={`md:w-3/12 w-2/12 px-2 border-[1px] text-lg 
                                 ${isInvalidEntry ? "border-red-400" : "border-listBlue"}`} type="text" maxLength={2}
                                     placeholder={fromHoursPlaceHolder} value={fromHours} onChange={(e) => {
-                                        inputHandler(e, setFromHours);
+                                        inputHandler(e, setFromHours, INPUT.NUMBER);
                                     }} /> :
                                 <input className={`md:w-3/12 w-2/12 px-2 border-[1px] text-lg 
                                 ${isInvalidEntry ? "border-red-400" : "border-listBlue"}`} type="text" maxLength={2}
                                     placeholder={fromMinutesPlaceHolder} value={fromMinutes} onChange={(e) => {
-                                        inputHandler(e, setFromMinutes);
+                                        inputHandler(e, setFromMinutes, INPUT.NUMBER);
                                     }} />
                             </label>
                         </div>
@@ -172,12 +190,12 @@ export default function OptionsPage() {
                                 <input className={`md:w-3/12 w-2/12 px-2 border-[1px] text-lg 
                                 ${isInvalidEntry ? "border-red-400" : "border-listBlue"}`} type="text" maxLength={2}
                                     placeholder={toHoursPlaceHolder} value={toHours} onChange={(e) => {
-                                        inputHandler(e, setToHours);
+                                        inputHandler(e, setToHours, INPUT.NUMBER);
                                     }} /> :
                                 <input className={`md:w-3/12 w-2/12 px-2 border-[1px] text-lg 
                                 ${isInvalidEntry ? "border-red-400" : "border-listBlue"}`} type="text" maxLength={2}
                                     placeholder={toMinutesPlaceHolder} value={toMinutes} onChange={(e) => {
-                                        inputHandler(e, setToMinutes);
+                                        inputHandler(e, setToMinutes, INPUT.NUMBER);
                                     }} />
                             </label>
                         </div>
@@ -188,8 +206,10 @@ export default function OptionsPage() {
                 </button>
                 <div className="flex flex-col gap-2">
                     <h1 className="font-bold text-lg">Select the page you want the extension to re-direct to</h1>
-                    <input className={`w-full px-2 border-[1px] py-2
-                        ${isInvalidRedirectURL ? "border-red-400" : "border-listBlue"}`} type="text" />
+                    <input className={`w-full px-2 border-[1px] py-2 text-lg 
+                        ${isInvalidRedirectURL ? "border-red-400" : "border-listBlue"}`} type="text" 
+                        onChange={(e) => { inputHandler(e, setRedirectURL, INPUT.TEXT)}} 
+                        placeholder={redirectURLPlaceholder} value={redirectURL}/>
                 </div>
                 <button className="bg-listBlue w-fit text-white my-2 py-1 px-2 text-lg hover:brightness-[1.5]"
                     onClick={redirectURLHandler}>Set
@@ -197,7 +217,7 @@ export default function OptionsPage() {
                 <div className="flex flex-col gap-2">
                     <h1 className="font-bold text-lg">Current websites on timeout list</h1>
                     <div className=" flex flex-col p-2 text-lg text-gray-500 w-full min-h-[100px]
-                    max-h-1/3 w-full overflow-y-auto overflow-x-auto border-[1px] border-listBlue">
+                        max-h-1/3 w-full overflow-y-auto overflow-x-auto border-[1px] border-listBlue">
                         {(blueListURLs && blueListURLs.length > 0)
                             ? blueListURLs.map((url, i) => <a key={uuidv4()} data-id={i}
                                 className={`p-1 m-1 w-full whitespace-nowrap ${selectedURLS[i] ? "bg-red-300" : ""}`}
