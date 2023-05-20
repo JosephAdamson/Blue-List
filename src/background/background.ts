@@ -27,8 +27,8 @@ chrome.tabs.onUpdated.addListener(async (tabID: number,
                     const from = new Date(buildTimeStamp(data["blueList"].timeFrom));
                     const to = new Date(buildTimeStamp(data["blueList"].timeTo));
 
-                    // we are going to assume the interval the the user provides wraps around
-                    // to the next day in this case
+                    // we are going to assume the interval the the user provides wraps 
+                    // around to the next day in this case
                     if (to > from) {
                         to.setDate(to.getDate() + 1);
                     }
