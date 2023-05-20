@@ -162,24 +162,24 @@ export default function OptionsPage() {
 
 
     return (
-        <div className="flex flex-col items-center bg-offWhite h-screen w-full font-openSans">
+        <div className="flex flex-col items-center bg-[#fafafa] h-screen w-full font-openSans">
             <div className="flex md:w-2/3 h-fit w-screen my-2 p-6 flex-col gap-4">
                 <div className="flex w-full md:w-2/3">
                     <h1 className="text-listBlue font-bold text-xl">/BLUE_LIST/</h1>
                 </div>
                 <div className="flex flex-col gap-2">
                     <h1 className="font-bold text-lg">Select your time out period</h1>
-                    <div className="flex flex-col gap-2 md:gap-0 md:flex-row w-full justify-center pb-2">
+                    <div className="flex flex-col gap-4 md:gap-20 md:flex-row w-full justify-start pb-2">
                         <div className="flex">
                             <label className="text-lg mr-4">From</label>
                             <label className="flex gap-2 text-lg">
-                                <input className={`md:w-3/12 w-2/12 px-2 border-[1px] text-lg 
-                                ${isInvalidEntry ? "border-red-400" : "border-listBlue"}`} type="text" maxLength={2}
+                                <input className={`md:w-[46px] w-2/12 px-2 border-2 text-lg bg-white rounded-sm
+                                ${isInvalidEntry ? "border-red-400" : "border-slate-300"}`} type="text" maxLength={2}
                                     placeholder={fromHoursPlaceHolder} value={fromHours} onChange={(e) => {
                                         inputHandler(e, setFromHours, INPUT.NUMBER);
                                     }} /> :
-                                <input className={`md:w-3/12 w-2/12 px-2 border-[1px] text-lg 
-                                ${isInvalidEntry ? "border-red-400" : "border-listBlue"}`} type="text" maxLength={2}
+                                <input className={`md:w-[46px] w-2/12 px-2 border-2 text-lg rounded-sm
+                                ${isInvalidEntry ? "border-red-400" : "border-slate-300"}`} type="text" maxLength={2}
                                     placeholder={fromMinutesPlaceHolder} value={fromMinutes} onChange={(e) => {
                                         inputHandler(e, setFromMinutes, INPUT.NUMBER);
                                     }} />
@@ -188,13 +188,13 @@ export default function OptionsPage() {
                         <div className="flex">
                             <label className="text-lg mr-9 md:mr-2">To</label>
                             <label className="flex gap-2 text-lg">
-                                <input className={`md:w-3/12 w-2/12 px-2 border-[1px] text-lg 
-                                ${isInvalidEntry ? "border-red-400" : "border-listBlue"}`} type="text" maxLength={2}
+                                <input className={`md:w-[46px] w-2/12 px-2 border-2 text-lg rounded-sm
+                                ${isInvalidEntry ? "border-red-400" : "border-slate-300"}`} type="text" maxLength={2}
                                     placeholder={toHoursPlaceHolder} value={toHours} onChange={(e) => {
                                         inputHandler(e, setToHours, INPUT.NUMBER);
                                     }} /> :
-                                <input className={`md:w-3/12 w-2/12 px-2 border-[1px] text-lg 
-                                ${isInvalidEntry ? "border-red-400" : "border-listBlue"}`} type="text" maxLength={2}
+                                <input className={`md:w-[46px] w-2/12 px-2 border-2 text-lg rounded-sm
+                                ${isInvalidEntry ? "border-red-400" : "border-slate-300"}`} type="text" maxLength={2}
                                     placeholder={toMinutesPlaceHolder} value={toMinutes} onChange={(e) => {
                                         inputHandler(e, setToMinutes, INPUT.NUMBER);
                                     }} />
@@ -202,35 +202,36 @@ export default function OptionsPage() {
                         </div>
                     </div>
                 </div>
-                <button className="bg-listBlue w-fit text-white my-2 py-1 px-2 text-lg hover:brightness-[1.5]"
+                <button className="bg-listBlue w-fit text-white my-2 py-1 px-2 text-lg hover:brightness-[1.5] rounded-sm"
                     onClick={setTimeFrame}>Set
                 </button>
                 <div className="flex flex-col gap-2">
                     <h1 className="font-bold text-lg">Select the page you want the extension to redirect to</h1>
-                    <input className={`w-full px-2 border-[1px] py-2 text-lg 
-                        ${isInvalidRedirectURL ? "border-red-400" : "border-listBlue"}`} type="text" 
+                    <input className={`w-full px-2 border-2 py-2 text-lg rounded-sm
+                        ${isInvalidRedirectURL ? "border-red-400" : "border-slate-300"}`} type="text" 
                         onChange={(e) => { inputHandler(e, setRedirectURL, INPUT.TEXT)}} 
                         placeholder={redirectURLPlaceholder} value={redirectURL}/>
                 </div>
-                <button className="bg-listBlue w-fit text-white my-2 py-1 px-2 text-lg hover:brightness-[1.5]"
+                <button className="bg-listBlue w-fit text-white my-2 py-1 px-2 text-lg hover:brightness-[1.5] rounded-sm"
                     onClick={redirectURLHandler}>Set
                 </button>
                 <div className="flex flex-col gap-2">
                     <h1 className="font-bold text-lg">Current websites on timeout list</h1>
-                    <div className=" flex flex-col p-2 bg-white text-lg text-gray-500 w-full min-h-[100px]
-                        max-h-1/3 w-full overflow-y-auto overflow-x-auto border-[1px] border-listBlue">
+                    <div className=" flex flex-col bg-white text-lg text-gray-500 w-full min-h-[100px]
+                        max-h-1/3 w-full overflow-y-auto overflow-x-auto border-2 border-slate-300 rounded-sm">
                         {(blueListURLs && blueListURLs.length > 0)
                             ? blueListURLs.map((url, i) => <a key={uuidv4()} data-id={i}
-                                className={`p-1 w-full whitespace-nowrap ${selectedURLS[i] ? "bg-red-300" : ""}`}
+                                className={`p-1 w-full whitespace-nowrap ${selectedURLS[i] ? "bg-[#ff5454] text-white" : ""}`}
                                 onClick={urlClickedHandler}>{url}</a>)
-                            : <h1 className="p-1">Looks like you haven't added any sites to your blue list yet!</h1>
+                            : <input className="p-1 bg-white" 
+                            placeholder="Looks like you haven't added any sites to your blue list yet!" disabled></input>
                         }
                     </div>
                 </div>
                 <div className="flex justify-between">
-                    <button className="bg-listBlue text-white my-2 py-1 px-2 text-lg hover:brightness-[1.5]"
+                    <button className="bg-listBlue text-white my-2 py-1 px-2 text-lg hover:brightness-[1.5] rounded-sm"
                         onClick={deleteSelected}>Delete</button>
-                    <button className="bg-red-600 text-white my-2 py-1 px-2 text-lg hover:brightness-[1.5]"
+                    <button className="bg-[#ff5454] text-white my-2 py-1 px-2 text-lg hover:brightness-[1.5] rounded-sm"
                         onClick={deleteAll}>Clear List</button>
                 </div>
             </div>

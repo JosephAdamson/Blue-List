@@ -63,11 +63,11 @@ export default function App() {
         <div>
             {
                 onExtensionsPage ?
-                    <div className="flex flex-col bg-white h-[180px] w-[400px] font-opensans">
+                    <div className="flex flex-col bg-offWhite h-[180px] w-[400px] font-opensans">
                         <div className="p-6 w-full">
                             <h1 className="text-lg font-bold text-listBlue">/BLUE_LIST/</h1>
                             <div className="flex justify-center items-center h-full w-full">
-                                <h1 className="text-md border-2 border-slate-300 p-2">
+                                <h1 className="text-md border-2 border-slate-300 rounded-sm p-2">
                                     Vist sites that you want to put out on the timeout list 
                                     and <span className="font-bold text-listBlue">click the extension icon!</span> You 
                                     can manage your current blue list configs by <span className="font-bold text-listBlue">
@@ -76,7 +76,7 @@ export default function App() {
                             </div>
                         </div>
                     </div> :
-                    <div className="flex flex-col bg-white w-[400px] font-opensans">
+                    <div className="flex flex-col bg-offWhite w-[400px] font-opensans">
                         <div className="p-6 w-full">
                             <h1 className="text-lg font-bold text-listBlue">/BLUE_LIST/</h1>
                             <div className="py-1">
@@ -84,7 +84,7 @@ export default function App() {
                                     Add whole url or its domain to your timeout list?
                                 </h1>
                             </div>
-                            <div className="flex gap-1 w-full p-2 items-center border-2 border-b-0 border-slate-300">
+                            <div className="flex gap-1 w-full p-2 items-center border-2 border-b-0 border-slate-300 bg-white rounded-t-sm">
                                 <input className="overflow-y-scroll w-full text-md p-2"
                                     type="text" readOnly value={tabURL} />
                                 <input className="border-2 border-black" type="radio" name="url-options" checked={fullURLSelected}
@@ -93,7 +93,7 @@ export default function App() {
                                         setFullURLSelected(fullURLSelected => !fullURLSelected);
                                     }} />
                             </div>
-                            <div className="flex gap-1 w-full p-2 items-center border-2 border-slate-300">
+                            <div className="flex gap-1 w-full p-2 items-center border-2 border-slate-300 bg-white rounded-b-sm">
                                 <input className="overflow-y-scroll w-full text-md p-2"
                                     type="text" readOnly value={domainURL} />
                                 <input className="border-2 border-black" type="radio" name="url-options"
@@ -104,10 +104,11 @@ export default function App() {
                             </div>
                             {
                                 !buttonClicked
-                                    ? <button className="bg-listBlue text-white my-2 py-1 px-2 text-lg hover:brightness-[1.5]"
+                                    ? <button className="bg-listBlue text-white my-2 py-1 px-2 text-lg 
+                                    rounded-sm hover:brightness-[1.5]"
                                         onClick={addEntry}
                                     >Set</button>
-                                    : <div className="h-10 w-10 border-2 border-slate-300 my-1 p-1">
+                                    : <div className="h-10 w-10 border-2 border-slate-300 my-1 p-1 rounded-sm">
                                         <img src="tick.png" alt="confirmed" />
                                     </div>
                             }

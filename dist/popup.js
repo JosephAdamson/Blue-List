@@ -98,35 +98,35 @@ function App() {
         chrome.tabs.reload();
     });
     return (react_1.default.createElement("div", null, onExtensionsPage ?
-        react_1.default.createElement("div", { className: "flex flex-col bg-white h-[180px] w-[400px] font-opensans" },
+        react_1.default.createElement("div", { className: "flex flex-col bg-offWhite h-[180px] w-[400px] font-opensans" },
             react_1.default.createElement("div", { className: "p-6 w-full" },
                 react_1.default.createElement("h1", { className: "text-lg font-bold text-listBlue" }, "/BLUE_LIST/"),
                 react_1.default.createElement("div", { className: "flex justify-center items-center h-full w-full" },
-                    react_1.default.createElement("h1", { className: "text-md border-2 border-slate-300 p-2" },
+                    react_1.default.createElement("h1", { className: "text-md border-2 border-slate-300 rounded-sm p-2" },
                         "Vist sites that you want to put out on the timeout list and ",
                         react_1.default.createElement("span", { className: "font-bold text-listBlue" }, "click the extension icon!"),
                         " You can manage your current blue list configs by ",
                         react_1.default.createElement("span", { className: "font-bold text-listBlue" }, "right-clicking the extension icon and selection 'options'"))))) :
-        react_1.default.createElement("div", { className: "flex flex-col bg-white w-[400px] font-opensans" },
+        react_1.default.createElement("div", { className: "flex flex-col bg-offWhite w-[400px] font-opensans" },
             react_1.default.createElement("div", { className: "p-6 w-full" },
                 react_1.default.createElement("h1", { className: "text-lg font-bold text-listBlue" }, "/BLUE_LIST/"),
                 react_1.default.createElement("div", { className: "py-1" },
                     react_1.default.createElement("h1", { className: "text-md text-black font-bold text-md" }, "Add whole url or its domain to your timeout list?")),
-                react_1.default.createElement("div", { className: "flex gap-1 w-full p-2 items-center border-2 border-b-0 border-slate-300" },
+                react_1.default.createElement("div", { className: "flex gap-1 w-full p-2 items-center border-2 border-b-0 border-slate-300 bg-white rounded-t-sm" },
                     react_1.default.createElement("input", { className: "overflow-y-scroll w-full text-md p-2", type: "text", readOnly: true, value: tabURL }),
                     react_1.default.createElement("input", { className: "border-2 border-black", type: "radio", name: "url-options", checked: fullURLSelected, onChange: () => {
                             console.log("clacked");
                             setFullURLSelected(fullURLSelected => !fullURLSelected);
                         } })),
-                react_1.default.createElement("div", { className: "flex gap-1 w-full p-2 items-center border-2 border-slate-300" },
+                react_1.default.createElement("div", { className: "flex gap-1 w-full p-2 items-center border-2 border-slate-300 bg-white rounded-b-sm" },
                     react_1.default.createElement("input", { className: "overflow-y-scroll w-full text-md p-2", type: "text", readOnly: true, value: domainURL }),
                     react_1.default.createElement("input", { className: "border-2 border-black", type: "radio", name: "url-options", onChange: () => {
                             console.log("clicked");
                             setFullURLSelected(fullURLSelected => !fullURLSelected);
                         } })),
                 !buttonClicked
-                    ? react_1.default.createElement("button", { className: "bg-listBlue text-white my-2 py-1 px-2 text-lg hover:brightness-[1.5]", onClick: addEntry }, "Set")
-                    : react_1.default.createElement("div", { className: "h-10 w-10 border-2 border-slate-300 my-1 p-1" },
+                    ? react_1.default.createElement("button", { className: "bg-listBlue text-white my-2 py-1 px-2 text-lg \n                                    rounded-sm hover:brightness-[1.5]", onClick: addEntry }, "Set")
+                    : react_1.default.createElement("div", { className: "h-10 w-10 border-2 border-slate-300 my-1 p-1 rounded-sm" },
                         react_1.default.createElement("img", { src: "tick.png", alt: "confirmed" }))))));
 }
 exports["default"] = App;
