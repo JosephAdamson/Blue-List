@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../styles/index.css";
-import { getURL } from "../utils"
+import { getURL, fetchBlueListData } from "../utils"
 
 export default function App() {
     const [tabURL, setFullURL] = useState<string>("");
@@ -13,8 +13,10 @@ export default function App() {
     useEffect(() => {
         const fetchURL = async () => {
             const urlStr = await getURL();
+            const data = await fetchBlueListData();
             if (urlStr) {
-                if (urlStr === "chrome://extensions/" || urlStr.includes("chrome-extension://")) {
+                if (urlStr === "chrome://extensions/" || urlStr.includes("chrome-extension://") 
+                    || urlStr === data["blueList"].redirectURL) {
                     setOnExtensionsPage(true);
                 } else {
                     setOnExtensionsPage(false);

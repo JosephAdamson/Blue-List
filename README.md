@@ -10,3 +10,5 @@ Chrome extension in the vein of [timeout](https://chrome.google.com/webstore/det
 file explorer and select the ```dist``` folder to upload. Alternatively you can just drag and drop this folder
 onto the extensions page (do not delete this folder afterwards).
 
+<img src="https://imgur.com/Xk1mFzx.gif">
+

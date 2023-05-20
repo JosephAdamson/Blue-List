@@ -36,9 +36,16 @@ const isURL = (url: string) => {
 }
 
 
+const fetchBlueListData = async () => {
+    const blueListData = await chrome.storage.sync.get("blueList");
+    return blueListData;
+}
+
+
 export {
     getTab,
     getURL,
     buildTimeStamp,
-    isURL
+    isURL,
+    fetchBlueListData
 }

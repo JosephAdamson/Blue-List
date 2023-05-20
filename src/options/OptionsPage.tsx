@@ -1,6 +1,6 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
 import { v4 as uuidv4 } from 'uuid';
-import { isURL } from "../utils";
+import { fetchBlueListData, isURL } from "../utils";
 
 enum INPUT {
     TEXT,
@@ -93,12 +93,6 @@ export default function OptionsPage() {
         } else {
             invalidEntryHandler(setIsInvalidRedirectURL)
         }
-    }
-
-
-    const fetchBlueListData = async () => {
-        const blueListData = await chrome.storage.sync.get("blueList");
-        return blueListData;
     }
 
 
