@@ -88,6 +88,7 @@ export default function OptionsPage() {
                     redirectURL: redirectURL
                 }
             });
+            setRedirectURLPlaceholder(redirectURL);
             setRedirectURL("");
         } else {
             invalidEntryHandler(setIsInvalidRedirectURL)
@@ -167,7 +168,7 @@ export default function OptionsPage() {
                     <h1 className="text-listBlue font-bold text-xl">/BLUE_LIST/</h1>
                 </div>
                 <div className="flex flex-col gap-2">
-                    <h1 className="font-bold text-lg">Select you time out period</h1>
+                    <h1 className="font-bold text-lg">Select your time out period</h1>
                     <div className="flex flex-col gap-2 md:gap-0 md:flex-row w-full justify-center pb-2">
                         <div className="flex">
                             <label className="text-lg mr-4">From</label>
@@ -205,7 +206,7 @@ export default function OptionsPage() {
                     onClick={setTimeFrame}>Set
                 </button>
                 <div className="flex flex-col gap-2">
-                    <h1 className="font-bold text-lg">Select the page you want the extension to re-direct to</h1>
+                    <h1 className="font-bold text-lg">Select the page you want the extension to redirect to</h1>
                     <input className={`w-full px-2 border-[1px] py-2 text-lg 
                         ${isInvalidRedirectURL ? "border-red-400" : "border-listBlue"}`} type="text" 
                         onChange={(e) => { inputHandler(e, setRedirectURL, INPUT.TEXT)}} 
@@ -216,11 +217,11 @@ export default function OptionsPage() {
                 </button>
                 <div className="flex flex-col gap-2">
                     <h1 className="font-bold text-lg">Current websites on timeout list</h1>
-                    <div className=" flex flex-col p-2 text-lg text-gray-500 w-full min-h-[100px]
+                    <div className=" flex flex-col p-2 bg-white text-lg text-gray-500 w-full min-h-[100px]
                         max-h-1/3 w-full overflow-y-auto overflow-x-auto border-[1px] border-listBlue">
                         {(blueListURLs && blueListURLs.length > 0)
                             ? blueListURLs.map((url, i) => <a key={uuidv4()} data-id={i}
-                                className={`p-1 m-1 w-full whitespace-nowrap ${selectedURLS[i] ? "bg-red-300" : ""}`}
+                                className={`p-1 w-full whitespace-nowrap ${selectedURLS[i] ? "bg-red-300" : ""}`}
                                 onClick={urlClickedHandler}>{url}</a>)
                             : <h1 className="p-1">Looks like you haven't added any sites to your blue list yet!</h1>
                         }

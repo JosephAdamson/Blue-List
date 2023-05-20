@@ -29,7 +29,7 @@ chrome.tabs.onUpdated.addListener((tabID, changeInfo, tab) => __awaiter(void 0, 
                     timeFrom: "09:00",
                     timeTo: "17:00",
                     urls: [],
-                    // use extension tab as default landing page
+                    // use extension tab as default redirect page
                     redirectURL: "chrome://extensions"
                 }
             });
@@ -42,11 +42,17 @@ chrome.tabs.onUpdated.addListener((tabID, changeInfo, tab) => __awaiter(void 0, 
                     const current = new Date();
                     const from = new Date((0, utils_1.buildTimeStamp)(data["blueList"].timeFrom));
                     const to = new Date((0, utils_1.buildTimeStamp)(data["blueList"].timeTo));
+                    // we are going to assume the interval the the user provides wraps around
+                    // to the next day in this case
+                    if (to > from) {
+                        to.setDate(to.getDate() + 1);
+                    }
                     if (current >= from && current <= to) {
                         const options = {
                             iconUrl: "favicon-48x48.png",
                             title: "OOPS",
-                            message: `Looks like you are trying to access a site on your timeout list, check out options page for more details`,
+                            message: `Looks like you are trying to access a site on your timeout list,
+                             check out options page for more details`,
                             type: "basic",
                             silent: false,
                             priority: 2

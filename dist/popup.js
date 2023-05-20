@@ -59,6 +59,7 @@ function App() {
                     setOnExtensionsPage(true);
                 }
                 else {
+                    setOnExtensionsPage(false);
                     setFullURL(urlStr);
                     const url = new URL(urlStr);
                     setDomainURL(`${url.protocol}//${url.hostname}`);
@@ -101,7 +102,11 @@ function App() {
             react_1.default.createElement("div", { className: "p-6 w-full" },
                 react_1.default.createElement("h1", { className: "text-lg font-bold text-listBlue" }, "/BLUE_LIST/"),
                 react_1.default.createElement("div", { className: "flex justify-center items-center h-full w-full" },
-                    react_1.default.createElement("h1", { className: "text-md border-2 border-slate-300 p-2" }, "Vist sites that you want to put out on the timeout list and click the extension icon! You can manage your current blue list configs by right-clicking the extension icon and selection 'options'")))) :
+                    react_1.default.createElement("h1", { className: "text-md border-2 border-slate-300 p-2" },
+                        "Vist sites that you want to put out on the timeout list and ",
+                        react_1.default.createElement("span", { className: "font-bold text-listBlue" }, "click the extension icon!"),
+                        " You can manage your current blue list configs by ",
+                        react_1.default.createElement("span", { className: "font-bold text-listBlue" }, "right-clicking the extension icon and selection 'options'"))))) :
         react_1.default.createElement("div", { className: "flex flex-col bg-white w-[400px] font-opensans" },
             react_1.default.createElement("div", { className: "p-6 w-full" },
                 react_1.default.createElement("h1", { className: "text-lg font-bold text-listBlue" }, "/BLUE_LIST/"),

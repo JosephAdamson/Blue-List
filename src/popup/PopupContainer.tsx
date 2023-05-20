@@ -17,6 +17,7 @@ export default function App() {
                 if (urlStr === "chrome://extensions/" || urlStr.includes("chrome-extension://")) {
                     setOnExtensionsPage(true);
                 } else {
+                    setOnExtensionsPage(false);
                     setFullURL(urlStr);
                     const url = new URL(urlStr);
                     setDomainURL(`${url.protocol}//${url.hostname}`);
@@ -67,9 +68,10 @@ export default function App() {
                             <h1 className="text-lg font-bold text-listBlue">/BLUE_LIST/</h1>
                             <div className="flex justify-center items-center h-full w-full">
                                 <h1 className="text-md border-2 border-slate-300 p-2">
-                                    Vist sites that you want to put out on the timeout list and click the extension icon!
-                                    You can manage your current blue list configs by right-clicking the extension icon and
-                                    selection 'options'
+                                    Vist sites that you want to put out on the timeout list 
+                                    and <span className="font-bold text-listBlue">click the extension icon!</span> You 
+                                    can manage your current blue list configs by <span className="font-bold text-listBlue">
+                                    right-clicking the extension icon and selection 'options'</span>
                                 </h1>
                             </div>
                         </div>

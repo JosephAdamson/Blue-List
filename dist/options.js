@@ -122,6 +122,7 @@ function OptionsPage() {
                     redirectURL: redirectURL
                 }
             });
+            setRedirectURLPlaceholder(redirectURL);
             setRedirectURL("");
         }
         else {
@@ -186,7 +187,7 @@ function OptionsPage() {
             react_1.default.createElement("div", { className: "flex w-full md:w-2/3" },
                 react_1.default.createElement("h1", { className: "text-listBlue font-bold text-xl" }, "/BLUE_LIST/")),
             react_1.default.createElement("div", { className: "flex flex-col gap-2" },
-                react_1.default.createElement("h1", { className: "font-bold text-lg" }, "Select you time out period"),
+                react_1.default.createElement("h1", { className: "font-bold text-lg" }, "Select your time out period"),
                 react_1.default.createElement("div", { className: "flex flex-col gap-2 md:gap-0 md:flex-row w-full justify-center pb-2" },
                     react_1.default.createElement("div", { className: "flex" },
                         react_1.default.createElement("label", { className: "text-lg mr-4" }, "From"),
@@ -214,14 +215,14 @@ function OptionsPage() {
                                 } }))))),
             react_1.default.createElement("button", { className: "bg-listBlue w-fit text-white my-2 py-1 px-2 text-lg hover:brightness-[1.5]", onClick: setTimeFrame }, "Set"),
             react_1.default.createElement("div", { className: "flex flex-col gap-2" },
-                react_1.default.createElement("h1", { className: "font-bold text-lg" }, "Select the page you want the extension to re-direct to"),
+                react_1.default.createElement("h1", { className: "font-bold text-lg" }, "Select the page you want the extension to redirect to"),
                 react_1.default.createElement("input", { className: `w-full px-2 border-[1px] py-2 text-lg 
                         ${isInvalidRedirectURL ? "border-red-400" : "border-listBlue"}`, type: "text", onChange: (e) => { inputHandler(e, setRedirectURL, INPUT.TEXT); }, placeholder: redirectURLPlaceholder, value: redirectURL })),
             react_1.default.createElement("button", { className: "bg-listBlue w-fit text-white my-2 py-1 px-2 text-lg hover:brightness-[1.5]", onClick: redirectURLHandler }, "Set"),
             react_1.default.createElement("div", { className: "flex flex-col gap-2" },
                 react_1.default.createElement("h1", { className: "font-bold text-lg" }, "Current websites on timeout list"),
-                react_1.default.createElement("div", { className: " flex flex-col p-2 text-lg text-gray-500 w-full min-h-[100px]\n                        max-h-1/3 w-full overflow-y-auto overflow-x-auto border-[1px] border-listBlue" }, (blueListURLs && blueListURLs.length > 0)
-                    ? blueListURLs.map((url, i) => react_1.default.createElement("a", { key: (0, uuid_1.v4)(), "data-id": i, className: `p-1 m-1 w-full whitespace-nowrap ${selectedURLS[i] ? "bg-red-300" : ""}`, onClick: urlClickedHandler }, url))
+                react_1.default.createElement("div", { className: " flex flex-col p-2 bg-white text-lg text-gray-500 w-full min-h-[100px]\n                        max-h-1/3 w-full overflow-y-auto overflow-x-auto border-[1px] border-listBlue" }, (blueListURLs && blueListURLs.length > 0)
+                    ? blueListURLs.map((url, i) => react_1.default.createElement("a", { key: (0, uuid_1.v4)(), "data-id": i, className: `p-1 w-full whitespace-nowrap ${selectedURLS[i] ? "bg-red-300" : ""}`, onClick: urlClickedHandler }, url))
                     : react_1.default.createElement("h1", { className: "p-1" }, "Looks like you haven't added any sites to your blue list yet!"))),
             react_1.default.createElement("div", { className: "flex justify-between" },
                 react_1.default.createElement("button", { className: "bg-listBlue text-white my-2 py-1 px-2 text-lg hover:brightness-[1.5]", onClick: deleteSelected }, "Delete"),
