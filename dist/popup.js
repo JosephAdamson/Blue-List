@@ -54,8 +54,10 @@ function App() {
     (0, react_1.useEffect)(() => {
         const fetchURL = () => __awaiter(this, void 0, void 0, function* () {
             const urlStr = yield (0, utils_1.getURL)();
+            const data = yield (0, utils_1.fetchBlueListData)();
             if (urlStr) {
-                if (urlStr === "chrome://extensions/" || urlStr.includes("chrome-extension://")) {
+                if (urlStr === "chrome://extensions/" || urlStr.includes("chrome-extension://")
+                    || urlStr === data["blueList"].redirectURL) {
                     setOnExtensionsPage(true);
                 }
                 else {

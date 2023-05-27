@@ -44,10 +44,11 @@ chrome.tabs.onUpdated.addListener((tabID, changeInfo, tab) => __awaiter(void 0, 
                     const to = new Date((0, utils_1.buildTimeStamp)(data["blueList"].timeTo));
                     // we are going to assume the interval the the user provides wraps 
                     // around to the next day in this case
-                    if (to > from) {
+                    if (from > to) {
                         to.setDate(to.getDate() + 1);
                     }
                     if (current >= from && current <= to) {
+                        console.log("pop");
                         const options = {
                             iconUrl: "favicon-48x48.png",
                             title: "OOPS",
@@ -88,7 +89,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.isURL = exports.buildTimeStamp = exports.getURL = exports.getTab = void 0;
+exports.fetchBlueListData = exports.isURL = exports.buildTimeStamp = exports.getURL = exports.getTab = void 0;
 const getTab = () => __awaiter(void 0, void 0, void 0, function* () {
     let [tab] = yield chrome.tabs.query({ active: true, lastFocusedWindow: true });
     return tab;
@@ -119,6 +120,11 @@ const isURL = (url) => {
     }
 };
 exports.isURL = isURL;
+const fetchBlueListData = () => __awaiter(void 0, void 0, void 0, function* () {
+    const blueListData = yield chrome.storage.sync.get("blueList");
+    return blueListData;
+});
+exports.fetchBlueListData = fetchBlueListData;
 
 
 /***/ })

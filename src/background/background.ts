@@ -29,11 +29,12 @@ chrome.tabs.onUpdated.addListener(async (tabID: number,
 
                     // we are going to assume the interval the the user provides wraps 
                     // around to the next day in this case
-                    if (to > from) {
+                    if (from > to) {
                         to.setDate(to.getDate() + 1);
                     }
-    
+
                     if (current >= from && current <= to) {
+                        console.log("pop");
                         const options: chrome.notifications.NotificationOptions<true> = {
                             iconUrl: "favicon-48x48.png",
                             title: "OOPS",

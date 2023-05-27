@@ -88,7 +88,7 @@ function OptionsPage() {
     };
     const setTimeFrame = () => __awaiter(this, void 0, void 0, function* () {
         if (fromHours && fromMinutes && toHours && toMinutes) {
-            const data = yield fetchBlueListData();
+            const data = yield (0, utils_1.fetchBlueListData)();
             chrome.storage.sync.set({
                 "blueList": {
                     timeFrom: `${fromHours}:${fromMinutes}`,
@@ -112,7 +112,7 @@ function OptionsPage() {
     });
     const redirectURLHandler = () => __awaiter(this, void 0, void 0, function* () {
         if ((0, utils_1.isURL)(redirectURL)) {
-            const data = yield fetchBlueListData();
+            const data = yield (0, utils_1.fetchBlueListData)();
             console.log(data["blueList"].timeFrom);
             chrome.storage.sync.set({
                 "blueList": {
@@ -129,12 +129,8 @@ function OptionsPage() {
             invalidEntryHandler(setIsInvalidRedirectURL);
         }
     });
-    const fetchBlueListData = () => __awaiter(this, void 0, void 0, function* () {
-        const blueListData = yield chrome.storage.sync.get("blueList");
-        return blueListData;
-    });
     const deleteSelected = () => __awaiter(this, void 0, void 0, function* () {
-        const currentData = yield fetchBlueListData();
+        const currentData = yield (0, utils_1.fetchBlueListData)();
         const updatedURLs = blueListURLs.filter((url, i) => !selectedURLS[i]);
         chrome.storage.sync.set({
             "blueList": {
@@ -148,7 +144,7 @@ function OptionsPage() {
         setSelectedURLS(Array.from({ length: updatedURLs.length }, (_, i) => false));
     });
     const deleteAll = () => __awaiter(this, void 0, void 0, function* () {
-        const currentData = yield fetchBlueListData();
+        const currentData = yield (0, utils_1.fetchBlueListData)();
         yield chrome.storage.sync.set({
             "blueList": {
                 timeFrom: currentData["blueList"].timeFrom,
@@ -170,7 +166,7 @@ function OptionsPage() {
     };
     (0, react_1.useEffect)(() => {
         const fetchData = () => __awaiter(this, void 0, void 0, function* () {
-            const data = yield fetchBlueListData();
+            const data = yield (0, utils_1.fetchBlueListData)();
             setBLueListURLS(data["blueList"].urls);
             setSelectedURLS(Array.from({ length: data["blueList"].urls.length }, (_, i) => false));
             setFromHoursPlaceHolder(data["blueList"].timeFrom.split(":")[0]);
