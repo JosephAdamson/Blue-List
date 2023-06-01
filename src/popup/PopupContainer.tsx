@@ -9,7 +9,6 @@ export default function App() {
     const [buttonClicked, setButtonClicked] = useState<boolean>(false);
     const [onExtensionsPage, setOnExtensionsPage] = useState<boolean>(false);
 
-
     useEffect(() => {
         const fetchURL = async () => {
             const urlStr = await getURL();
@@ -38,10 +37,11 @@ export default function App() {
             if (data.blueList.urls) {
                 chrome.storage.sync.set({
                     "blueList": {
-                        timeFrom: data.blueList.timeFrom,
-                        timeTo: data.blueList.timeTo,
-                        urls: [...data.blueList.urls, url.trim()],
-                        redirectURL: data.blueList.redirectURL
+                        timeFrom: data["blueList"].timeFrom,
+                        timeTo: data["blueList"].timeTo,
+                        weekdays: data["blueList"].weekdays,
+                        urls: [...data["blueList"].urls, url.trim()],
+                        redirectURL: data["blueList"].redirectURL
                     }
                 });
             } else {
@@ -49,7 +49,9 @@ export default function App() {
                     "blueList": {
                         timeFrom: "09:00",
                         timeTo: "17:00",
-                        urls: [url]
+                        weekdays: data["blueList"].weekdays,
+                        urls: [url],
+                        redirectURL: data["blueList"].redirectURL
                     }
                 });
             }
@@ -88,7 +90,7 @@ export default function App() {
                             </div>
                             <div className="flex gap-1 w-full p-2 items-center border-2 border-b-0 border-slate-300 bg-white rounded-t-sm">
                                 <input className="overflow-y-scroll w-full text-md p-2"
-                                    type="text" readOnly value={tabURL} />
+                                    type="text" readOnly value={`url: ${tabURL}`} />
                                 <input className="border-2 border-black" type="radio" name="url-options" checked={fullURLSelected}
                                     onChange={() => {
                                         console.log("clacked");
@@ -97,7 +99,7 @@ export default function App() {
                             </div>
                             <div className="flex gap-1 w-full p-2 items-center border-2 border-slate-300 bg-white rounded-b-sm">
                                 <input className="overflow-y-scroll w-full text-md p-2"
-                                    type="text" readOnly value={domainURL} />
+                                    type="text" readOnly value={`domain: ${domainURL}`} />
                                 <input className="border-2 border-black" type="radio" name="url-options"
                                     onChange={() => {
                                         console.log("clicked");
@@ -110,7 +112,7 @@ export default function App() {
                                     rounded-sm hover:brightness-[1.5]"
                                         onClick={addEntry}
                                     >Set</button>
-                                    : <div className="h-10 w-10 border-2 border-slate-300 my-1 p-1 rounded-sm">
+                                    : <div className="h-10 w-10 border-2 border-slate-300 text-[1rem] my-1 p-1 rounded-sm">
                                         <img src="tick.png" alt="confirmed" />
                                     </div>
                             }
