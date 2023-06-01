@@ -67,14 +67,17 @@ export default function App() {
         <div>
             {
                 onExtensionsPage ?
-                    <div className="flex flex-col bg-offWhite h-[180px] w-[400px] font-opensans">
+                    <div className="flex flex-col bg-offWhite h-[200px] w-[400px] font-opensans">
                         <div className="p-6 w-full">
                             <h1 className="text-lg font-bold text-listBlue">/BLUE_LIST/</h1>
-                            <div className="flex justify-center items-center h-full w-full">
-                                <h1 className="text-md border-2 border-slate-300 rounded-sm p-2">
+                            <div className="flex flex-col justify-center items-center h-full w-full border-2 border-slate-300 rounded-sm px-2">
+                                <h1 className="text-md">
                                     Vist sites that you want to put out on the timeout list 
-                                    and <span className="font-bold text-listBlue">click the extension icon!</span> You 
-                                    can manage your current blue list configs by <span className="font-bold text-listBlue">
+                                    and <span className="font-bold text-listBlue">click the extension icon!</span>
+                                </h1>
+                                <br/>
+                                <h1 className="text-md">
+                                You can manage your current blue list configs by <span className="font-bold text-listBlue">
                                     right-clicking the extension icon and selection 'options'</span>
                                 </h1>
                             </div>
