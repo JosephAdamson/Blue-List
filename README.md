@@ -1,5 +1,5 @@
 ### Chrome productivity extension
-Chrome extension in the vein of [timeout](https://chrome.google.com/webstore/detail/time-out-page-blocker/hoeinipdpcnbifnmdkfbgmpaccbjpinl?hl=en-GB) or [stayFocused](https://chrome.google.com/webstore/detail/stayfocusd-block-distract/laankejkbhbdhmipfmgcngdelahlfoji), made with React and Chrome web APIs.
+Simple chrome extension in the vein of [timeout](https://chrome.google.com/webstore/detail/time-out-page-blocker/hoeinipdpcnbifnmdkfbgmpaccbjpinl?hl=en-GB) or [stayFocused](https://chrome.google.com/webstore/detail/stayfocusd-block-distract/laankejkbhbdhmipfmgcngdelahlfoji), made with React and Chrome web APIs.
 
 ## Download locally
 1. Clone the repo.
